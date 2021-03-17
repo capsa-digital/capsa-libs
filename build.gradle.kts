@@ -13,7 +13,7 @@ plugins {
     `maven-publish`
 }
 
-group = "digital.capsa.core"
+group = "digital.capsa"
 
 tasks.withType<Detekt> {
     failFast = false
