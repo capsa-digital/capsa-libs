@@ -120,7 +120,7 @@ publishing {
     repositories {
         maven {
             name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/capsa-digital/capsa-it")
+            url = uri("https://maven.pkg.github.com/capsa-digital/capsa-core")
             credentials {
                 username = System.getenv("GITHUB_ACTOR")
                 password = System.getenv("GITHUB_TOKEN")
