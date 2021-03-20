@@ -24,5 +24,7 @@ plugins {
     id("com.gradle.enterprise")
 }
 
-rootProject.name = "capsa-core"
+rootProject.name = "capsa-libs"
+include("capsa-libs-core")
+include("capsa-libs-it")
 
