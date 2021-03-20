@@ -8,22 +8,3 @@ dependencies {
     implementation("org.springframework.cloud:spring-cloud-starter-function-web")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
-
-publishing {
-    publications {
-        create<MavenPublication>("default") {
-            from(components["java"])
-        }
-    }
-
-    repositories {
-        maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/capsa-digital/capsa-core")
-            credentials {
-                username = System.getenv("GITHUB_ACTOR")
-                password = System.getenv("GITHUB_TOKEN")
-            }
-        }
-    }
-}
