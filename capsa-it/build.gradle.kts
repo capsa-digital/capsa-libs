@@ -29,7 +29,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-test")
     implementation("org.springframework.ws:spring-ws-core")
     implementation("org.springframework:spring-context")
-    implementation(project(":capsa-libs-core"))
+    implementation(project(":capsa-core"))
 }
 
 publishing {

@@ -25,6 +25,6 @@ plugins {
 }
 
 rootProject.name = "capsa-libs"
-include("capsa-libs-core")
-include("capsa-libs-it")
+include("capsa-core")
+include("capsa-it")
 
