@@ -90,7 +90,7 @@ abstract class AbstractAggregate(private val aggregateName: String) : Aggregate 
         return builder.toString()
     }
 
-    private fun getAttributes(): String {
+    open fun getAttributes(): String {
         return this::class.declaredMemberProperties.filter { it.visibility == KVisibility.PUBLIC }
             .joinToString(prefix = "[", postfix = "]") { "${it.name}=${it.getter.call(this)}" }
     }
@@ -106,6 +106,7 @@ abstract class AbstractAggregate(private val aggregateName: String) : Aggregate 
     fun nextRandomInt(seed: Int, bound: Int): Int {
         return Random(31 * randomSeed + seed).nextInt(bound)
     }
+
 }
 
 
