@@ -19,7 +19,7 @@ subprojects {
     apply(plugin = "io.spring.dependency-management")
     apply(plugin = "org.springframework.boot")
 
-    group = "digital.capsa"
+    group = "telus.capsa"
 
     tasks.withType<Detekt> {
         failFast = false
