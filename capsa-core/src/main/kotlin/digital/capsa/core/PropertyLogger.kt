@@ -1,6 +1,5 @@
 package digital.capsa.core
 
-import org.slf4j.LoggerFactory
 import org.springframework.boot.context.event.ApplicationReadyEvent
 import org.springframework.core.env.AbstractEnvironment
 import org.springframework.core.env.EnumerablePropertySource
@@ -10,7 +9,7 @@ import java.util.stream.StreamSupport
 
 object PropertyLogger {
     fun printPropertiesOnStartup() {
-        if (LoggerFactory.getLogger(Unit::class.java).isDebugEnabled) {
+        if (logger.isDebugEnabled) {
             val buffer = StringBuffer("============ System Properties ============\n")
 
             val properties = System.getProperties()
@@ -21,7 +20,7 @@ object PropertyLogger {
             val env = System.getenv()
             env.forEach { (k, v) -> buffer.append("$k = $v\n") }
 
-            print("Environment:\n$buffer\n")
+            logger.debug("Environment:\n$buffer\n")
         }
     }
 
@@ -47,7 +46,7 @@ object PropertyLogger {
                     )
                 }
             buffer.append("===========================================")
-            logger.info("Environment:\n$buffer")
+            logger.debug("Environment:\n$buffer")
         }
     }
 
