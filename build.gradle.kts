@@ -21,6 +21,11 @@ subprojects {
 
     group = "digital.capsa"
 
+    java {
+        withJavadocJar()
+        withSourcesJar()
+    }
+
     tasks.withType<Detekt> {
         failFast = false
         jvmTarget = "11"
