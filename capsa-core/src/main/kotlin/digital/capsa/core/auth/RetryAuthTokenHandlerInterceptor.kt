@@ -1,6 +1,5 @@
 package digital.capsa.core.auth
 
-import digital.capsa.core.auth.ClientCredentials
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpRequest
 import org.springframework.http.HttpStatus
