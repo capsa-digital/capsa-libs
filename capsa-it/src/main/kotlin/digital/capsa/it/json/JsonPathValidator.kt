@@ -7,6 +7,7 @@ import com.jayway.jsonpath.JsonPath
 import digital.capsa.it.validation.OpType
 import digital.capsa.it.validation.ValidationRule
 import net.minidev.json.JSONArray
+import java.util.regex.Pattern
 import kotlin.test.assertEquals
 
 object JsonPathValidator {
@@ -72,7 +73,7 @@ object JsonPathValidator {
                                 assertThat(
                                     jsonPath,
                                     "json path ${rule.path} validation failed, document: $document"
-                                ).matches(Regex(valueList[0].toString()))
+                                ).matches(Regex(valueList[0].toString(), RegexOption.DOT_MATCHES_ALL))
                             OpType.equal ->
                                 assertEquals(
                                     valueList[0],
