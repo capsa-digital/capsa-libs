@@ -17,7 +17,10 @@ import javax.xml.bind.DatatypeConverter
 class ClientCredentials {
 
     companion object {
-        var authToken: AuthToken? = null
+        /*
+         * cache of AuthToken objects with scope for a key
+         */
+        var authTokenCache: MutableMap<String, AuthToken> = mutableMapOf()
     }
 
     @Value("\${auth-token-service.host}")
@@ -38,9 +41,6 @@ class ClientCredentials {
     @Value("\${auth-token-service.client-secret}")
     private lateinit var authTokenServiceClientSecret: String
 
-    @Value("\${auth-token-service.scope}")
-    private lateinit var authTokenServiceScope: String
-
     @Value("\${auth-token-service.timeout-buffer:20}")
     private lateinit var authTokenServiceTimeoutBuffer: String
 
@@ -49,19 +49,22 @@ class ClientCredentials {
         "$authTokenServiceSchema://$authTokenServiceHost:$authTokenServicePort/$authTokenServiceBasePath/st/token"
     }
 
-    fun getAuthToken(forceRefresh: Boolean = false): String {
-        refreshAuthToken(forceRefresh)
-        return "Bearer ${authToken.also { it?.usageCounter?.incrementAndGet() }?.token}"
+    fun getAuthToken(scope: String, forceRefresh: Boolean = false): String {
+        refreshAuthToken(
+            scope = scope,
+            forceRefresh = forceRefresh
+        )
+        return "Bearer ${authTokenCache[scope].also { it?.usageCounter?.incrementAndGet() }?.token}"
     }
 
     @Synchronized
-    fun refreshAuthToken(forceRefresh: Boolean) {
-        if (authToken == null || forceRefresh || authToken?.expiryDate?.isBefore(Instant.now()) != true) {
+    fun refreshAuthToken(scope: String, forceRefresh: Boolean) {
+        if (authTokenCache[scope] == null || forceRefresh || authTokenCache[scope]?.expiryDate?.isBefore(Instant.now()) != true) {
             var exception: RestClientException? = null
             // Retry 3 times
             for (attempt in 1..3) {
                 try {
-                    authToken = retrieveAuthToken()
+                    authTokenCache[scope] = retrieveAuthToken(scope)
                     break
                 } catch (e: RestClientException) {
                     exception = e
@@ -72,7 +75,7 @@ class ClientCredentials {
         }
     }
 
-    private fun retrieveAuthToken(): AuthToken {
+    private fun retrieveAuthToken(scope: String): AuthToken {
         val requestHeaders = HttpHeaders()
         requestHeaders.add(
             "Authorization", "Basic " +
@@ -85,7 +88,7 @@ class ClientCredentials {
 
         val params: MultiValueMap<String, String> = LinkedMultiValueMap()
         params.add("grant_type", "client_credentials")
-        params.add("scope", authTokenServiceScope)
+        params.add("scope", scope)
 
         return try {
             RestTemplate().exchange(
