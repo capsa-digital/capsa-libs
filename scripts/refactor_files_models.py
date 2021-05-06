@@ -93,7 +93,8 @@ def find_replace_old_classes_names(new_filenames, class_names, package_name=""):
 						line = line.replace(max_score_cn, f"{max_score_cn}Dto")
 					
 				print(line, end='')
-			elif "val @baseType" in line or "val @schemaLocation" in line or "val @type" in line or "val @referredType" in line:
+# 			elif "val @baseType" in line or "val @schemaLocation" in line or "val @type" in line or "val @referredType" in line:
+			elif "val @" in line:
 				value_type = line.split("@")[1].split(":")[0]
 				line = line.replace("@", "")
 				line = f"\t@get:JsonProperty(\"@{value_type}\")\n{line}"
