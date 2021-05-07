@@ -15,9 +15,10 @@ class RetryAuthTokenHandlerInterceptor : ClientHttpRequestInterceptor {
     override fun intercept(request: HttpRequest, body: ByteArray, execution: ClientHttpRequestExecution): ClientHttpResponse {
         var response: ClientHttpResponse = execution.execute(request, body)
         if (HttpStatus.UNAUTHORIZED === response.statusCode) {
-            request.headers["Authorization"]
+            val jwtToken = request.headers["Authorization"] // TODO read scope from JWT token
+            val scope = "958"
             // TODO fix hardcoded scope - retrieve from JWT
-            val accessToken: String = clientCredentials.getAuthToken("958", true)
+            val accessToken: String = clientCredentials.getAuthToken(scope, true)
             if (accessToken.isNotBlank()) {
                 request.headers["Authorization"] = accessToken
                 response = execution.execute(request, body)

@@ -58,7 +58,7 @@ class ClientCredentials {
     }
 
     @Synchronized
-    fun refreshAuthToken(scope: String, forceRefresh: Boolean) {
+    private fun refreshAuthToken(scope: String, forceRefresh: Boolean) {
         if (authTokenCache[scope] == null || forceRefresh || authTokenCache[scope]?.expiryDate?.isBefore(Instant.now()) != true) {
             var exception: RestClientException? = null
             // Retry 3 times
