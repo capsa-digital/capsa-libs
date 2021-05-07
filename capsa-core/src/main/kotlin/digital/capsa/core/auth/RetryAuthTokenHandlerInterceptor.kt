@@ -31,8 +31,7 @@ class RetryAuthTokenHandlerInterceptor : ClientHttpRequestInterceptor {
         try {
             // Get the token, remove the Bearer word
             val token: String = headerAuthorization!!.first().split(" ")[1]
-            val jwt = JWT.decode(token)
-            return jwt.getClaim(claimName).asList(String::class.java).toList().map{it.trim()}.filter { it.isNotEmpty() }.distinct().first()
+            return JWT.decode(token).getClaim(claimName).asList(String::class.java).map{it.trim()}.filter { it.isNotEmpty() }.distinct().first()
         } catch (e: Exception){
             throw AuthTokenException("Fail to extract $claimName from jwt token!", e)
         }
