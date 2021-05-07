@@ -4,9 +4,15 @@ import fileinput
 import argparse
 import re
 
+"""
+    Example of use (in command line):
+        python refactor_files_models.py --package package.name.com
+
+    eample of package: com.telus.ews.poq.api.gateway.am.model
+"""
+
 
 old_package_name = "io.swagger.server.models"
-# Example of package: com.telus.ews.poq.api.gateway.am.model
 
 def remove_duplicated_lines(input_file):
 	outputfile_name = f"{input_file}_2"
