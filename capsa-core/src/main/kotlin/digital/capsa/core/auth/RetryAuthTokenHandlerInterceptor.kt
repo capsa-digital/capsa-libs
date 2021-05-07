@@ -3,6 +3,7 @@ package digital.capsa.core.auth
 import com.auth0.jwt.JWT
 import com.auth0.jwt.exceptions.JWTDecodeException
 import digital.capsa.core.exceptions.AuthTokenException
+import digital.capsa.core.logger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpRequest
 import org.springframework.http.HttpStatus
@@ -22,6 +23,7 @@ class RetryAuthTokenHandlerInterceptor : ClientHttpRequestInterceptor {
             val accessToken: String = clientCredentials.getAuthToken(scope, true)
             if (accessToken.isNotBlank()) {
                 request.headers["Authorization"] = accessToken
+                logger.warn("Retry call for ${request.uri}")
                 response = execution.execute(request, body)
             }
         }
