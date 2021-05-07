@@ -1,6 +1,7 @@
 package digital.capsa.core.auth
 
 import com.auth0.jwt.JWT
+import com.auth0.jwt.exceptions.JWTDecodeException
 import digital.capsa.core.exceptions.AuthTokenException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpRequest
@@ -30,10 +31,11 @@ class RetryAuthTokenHandlerInterceptor : ClientHttpRequestInterceptor {
     private fun getClaim(headerAuthorization: MutableList<String>?, claimName: String): String {
         try {
             // Get the token, remove the Bearer word
-            val token: String = headerAuthorization!!.first().split(" ")[1]
-            return JWT.decode(token).getClaim(claimName).asList(String::class.java).map{it.trim()}.filter { it.isNotEmpty() }.distinct().first()
-        } catch (e: Exception){
-            throw AuthTokenException("Fail to extract $claimName from jwt token!", e)
+            val token: String = headerAuthorization?.first()?.split(" ")?.get(1)
+                ?: throw AuthTokenException("Failed to extract Authorization token!", null)
+            return JWT.decode(token).getClaim(claimName).asList(String::class.java).map { it.trim() }.filter { it.isNotEmpty() }.distinct().first()
+        } catch (e: JWTDecodeException) {
+            throw AuthTokenException("Failed to extract $claimName from jwt token!", e)
         }
     }
 }
