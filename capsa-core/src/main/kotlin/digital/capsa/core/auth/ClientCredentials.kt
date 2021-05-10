@@ -12,6 +12,7 @@ import org.springframework.util.MultiValueMap
 import org.springframework.web.client.RestClientException
 import org.springframework.web.client.RestTemplate
 import java.time.Instant
+import java.util.concurrent.atomic.AtomicInteger
 import javax.xml.bind.DatatypeConverter
 
 class ClientCredentials {
@@ -64,6 +65,9 @@ class ClientCredentials {
             // Retry 3 times
             for (attempt in 1..3) {
                 try {
+                    if(authTokenCache[scope]?.usageCounter?.get() ?: 0 < 1) {
+                        logger.warn("The usage of authToken for scope: $scope is ${authTokenCache[scope]!!.usageCounter.get()} times.")
+                    }
                     authTokenCache[scope] = retrieveAuthToken(scope)
                     break
                 } catch (e: RestClientException) {
