@@ -12,6 +12,7 @@ import org.springframework.util.MultiValueMap
 import org.springframework.web.client.RestClientException
 import org.springframework.web.client.RestTemplate
 import java.time.Instant
+import java.time.ZonedDateTime
 import java.util.concurrent.atomic.AtomicInteger
 import javax.xml.bind.DatatypeConverter
 
@@ -60,7 +61,7 @@ class ClientCredentials {
 
     @Synchronized
     private fun refreshAuthToken(scope: String, forceRefresh: Boolean) {
-        if (authTokenCache[scope] == null || forceRefresh || authTokenCache[scope]?.expiryDate?.isBefore(Instant.now()) != true) {
+        if (authTokenCache[scope] == null || forceRefresh || authTokenCache[scope]?.expiryDate?.isBefore(ZonedDateTime.now())!!) {
             var exception: RestClientException? = null
             // Retry 3 times
             for (attempt in 1..3) {
@@ -109,6 +110,6 @@ class ClientCredentials {
     private fun AuthResponse.transform(): AuthToken = AuthToken(
         token = access_token,
         tokenType = token_type,
-        expiryDate = Instant.now().plusSeconds((expires_in - authTokenServiceTimeoutBuffer.toInt()).toLong())
+        expiryDate = ZonedDateTime.now().plusSeconds((expires_in - authTokenServiceTimeoutBuffer.toInt()).toLong())
     )
 }
