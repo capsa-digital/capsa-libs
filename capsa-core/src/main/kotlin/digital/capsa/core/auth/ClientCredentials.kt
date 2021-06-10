@@ -3,6 +3,7 @@ package digital.capsa.core.auth
 import digital.capsa.core.exceptions.AuthTokenException
 import digital.capsa.core.logger
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
@@ -14,6 +15,7 @@ import org.springframework.web.client.RestTemplate
 import java.time.ZonedDateTime
 import javax.xml.bind.DatatypeConverter
 
+@Configuration
 class ClientCredentials {
 
     companion object {
