@@ -1,6 +1,6 @@
 pluginManagement {
     val gradlePluginVersion = object {
-        val SPRING_BOOT_GRADLE_VERSION = "2.4.1"
+        val SPRING_BOOT_GRADLE_VERSION = "2.4.7"
         val SPRING_DEPENDENCY_MANAGEMENT_VERSION = "1.0.10.RELEASE"
         val KOTLIN_GRADLE_VERSION = "1.4.21"
         val DETEKT_VERSION = "1.10.0"
