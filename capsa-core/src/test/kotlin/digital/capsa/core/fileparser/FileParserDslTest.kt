@@ -15,28 +15,28 @@ class FileParserDslTest {
     @Test
     fun test1() {
         val parser = parser(
-            BufferedReader(
-                StringReader(
-                    """
+                BufferedReader(
+                        StringReader(
+                                """
                     bbb 23 2021-03-09
                     bbb cc 23 2021-04-19
      """.trimIndent()
+                        )
                 )
-            )
         ) {
             header {
                 Header(
-                    field("field1", 0, 4),
-                    field("field2",4, 7),
-                    field("field3",7, 17)
+                        field(0, 4, "field1"),
+                        field(4, 7, "field2"),
+                        field(7, 17, "field3")
                 )
             }
             line {
                 Item(
-                    field("field1", 0, 4),
-                    field("field2", 4, 7),
-                    field("field3", 7, 10),
-                    field("field4", 10, 20)
+                        field(0, 4, "field1"),
+                        field(4, 7, "field2"),
+                        field(7, 10, "field3"),
+                        field(10, 20, "field4")
                 )
             }
         }
