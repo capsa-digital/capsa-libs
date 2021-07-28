@@ -20,12 +20,12 @@ import java.util.stream.Collectors
 @Component
 class HttpRequestBuilder(private val objectMapper: ObjectMapper, private val requestFile: String) {
 
-    private var transformations: Map<String, Any?> = emptyMap()
+    private var transformations: Map<String, Any?> = mutableMapOf()
 
     private var token: String? = null
 
     fun withTransformation(vararg transformations: Pair<String, Any?>): HttpRequestBuilder {
-        this.transformations = transformations.toMap()
+        this.transformations += transformations.toMap()
         return this
     }
 
@@ -73,7 +73,7 @@ class HttpRequestBuilder(private val objectMapper: ObjectMapper, private val req
         val response = restTemplate.exchange(
             URI(httpRequest.schema, null, httpRequest.host, httpRequest.port,
                 (httpRequest.basePath?.let { "${httpRequest.basePath}" } ?: "")
-                        + httpRequest.path, httpRequest.queryParams, null).toString(),
+                    + httpRequest.path, httpRequest.queryParams, null).toString(),
             httpRequest.method, requestEntity, String::class.java)
 
         if (block != null) {
@@ -89,7 +89,7 @@ class HttpRequestBuilder(private val objectMapper: ObjectMapper, private val req
         proxyHost: String?,
         proxyPort: String?
     ):
-            HttpComponentsClientHttpRequestFactory {
+        HttpComponentsClientHttpRequestFactory {
         val clientHttpRequestFactory = HttpComponentsClientHttpRequestFactory(
             HttpClientBuilder.create()
                 .setProxy(proxyHost?.let { HttpHost(it, proxyPort!!.toInt(), "http") })
