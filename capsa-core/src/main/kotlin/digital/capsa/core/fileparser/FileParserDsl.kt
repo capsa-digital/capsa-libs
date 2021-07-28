@@ -8,6 +8,8 @@ annotation class ParserMarker
 @ParserMarker
 class Parser(private val bufferedReader: BufferedReader) {
 
+    private var lineCount: Int = 0
+
     private val lines: List<Line> = bufferedReader.lineSequence().map {
         Line(it, null)
     }.toMutableList().also {
@@ -15,18 +17,18 @@ class Parser(private val bufferedReader: BufferedReader) {
     }
 
     fun header(
-            recordBuilder: TransformerBuilder.() -> Any
+        recordBuilder: TransformerBuilder.() -> Any
     ) {
-        lines[0].obj = TransformerBuilder(lines[0].str, 0).recordBuilder()
+        val headerIndex = lineCount++
+        lines[headerIndex].obj = TransformerBuilder(lines[headerIndex].str, headerIndex).recordBuilder()
     }
 
     fun line(
-            recordBuilder: TransformerBuilder.() -> Any
+        recordBuilder: TransformerBuilder.() -> Any
     ) {
-        lines.forEachIndexed { index, line ->
-            if (index != 0) {
-                lines[index].obj = TransformerBuilder(line.str, index).recordBuilder()
-            }
+        while (lineCount < lines.size) {
+            val lineIndex = lineCount++
+            lines[lineIndex].obj = TransformerBuilder(lines[lineIndex].str, lineIndex).recordBuilder()
         }
     }
 
@@ -35,21 +37,22 @@ class Parser(private val bufferedReader: BufferedReader) {
     }
 
     private data class Line(
-            val str: String,
-            var obj: Any?
+        val str: String,
+        var obj: Any?
     )
 }
 
 class TransformerBuilder(
-        val line: String,
-        val index: Int
+    private val line: String,
+    val index: Int
+
 ) {
     inline fun <reified R> field(
-            name: String? = null,
-            from: Int,
-            toExclusive: Int,
-            default: () -> R? = { null },
-            noinline parser: ((String) -> R?)? = null
+        from: Int,
+        toExclusive: Int,
+        name: String? = null,
+        default: () -> R? = { null },
+        noinline parser: ((String) -> R?)? = null
     ): R? {
         val str = readField(from, toExclusive)
         return if (str.isNotBlank()) {
@@ -58,13 +61,13 @@ class TransformerBuilder(
     }
 
     inline fun <reified R> mandatoryField(
-            name: String? = null,
-            from: Int,
-            toExclusive: Int,
-            default: () -> R = {
-                throw FileParserException(name?.let { "The field $name is mandatory" } ?: "Field is mandatory")
-            },
-            noinline parser: ((String) -> R)? = null
+        from: Int,
+        toExclusive: Int,
+        name: String? = null,
+        default: () -> R = {
+            throw FileParserException(name?.let { "The field $name is mandatory" } ?: "Field is mandatory")
+        },
+        noinline parser: ((String) -> R)? = null
     ): R {
         val str = readField(from, toExclusive)
         return if (str.isNotBlank()) {
@@ -79,8 +82,8 @@ class TransformerBuilder(
 }
 
 fun parser(
-        bufferedReader: BufferedReader,
-        init: Parser.() -> Unit
+    bufferedReader: BufferedReader,
+    init: Parser.() -> Unit
 ): Parser {
     val parser = Parser(bufferedReader)
     parser.init()
@@ -88,4 +91,4 @@ fun parser(
 }
 
 open class FileParserException(message: String, cause: Throwable? = null) :
-        RuntimeException(message, cause)
+    RuntimeException(message, cause)
