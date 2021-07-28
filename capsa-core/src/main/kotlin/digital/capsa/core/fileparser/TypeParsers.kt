@@ -11,28 +11,27 @@ inline fun <reified T> defaultTypeParser(parse: String): T = parse.parseToType(T
 
 @OptIn(ExperimentalUnsignedTypes::class)
 fun <T> String.parseToType(type: KClass<*>): T {
-    if (type.isSubclassOf(Enum::class)) return parseToEnum(type) as T
-
-    return when (type) {
-        String::class -> parseToString()
-        Int::class -> parseToInt()
-        UInt::class -> parseToUInt()
-        Double::class -> parseToDouble()
-        Long::class -> parseToLong()
-        ULong::class -> parseToULong()
-        Char::class -> parseToChar()
-        Boolean::class -> parseToBoolean()
-        LocalDate::class -> parseToLocalDate()
-        LocalDateTime::class -> parseToLocalDateTime()
-        LocalTime::class -> parseToLocalTime()
-        BigDecimal::class -> parseToBigDecimal()
-        else -> throw NoParserForClass(type)
-    } as T
+    try {
+        if (type.isSubclassOf(Enum::class)) return parseToEnum(type) as T
+        return when (type) {
+            String::class -> parseToString()
+            Int::class -> parseToInt()
+            UInt::class -> parseToUInt()
+            Double::class -> parseToDouble()
+            Long::class -> parseToLong()
+            ULong::class -> parseToULong()
+            Char::class -> parseToChar()
+            Boolean::class -> parseToBoolean()
+            LocalDate::class -> parseToLocalDate()
+            LocalDateTime::class -> parseToLocalDateTime()
+            LocalTime::class -> parseToLocalTime()
+            BigDecimal::class -> parseToBigDecimal()
+            else -> throw FileParserException("There are no default parsers for class $type. Please provide a custom parser")
+        } as T
+    } catch (e: RuntimeException) {
+        throw FileParserException("Unable to parse $type (${e.message})", e)
+    }
 }
-
-class NoParserForClass(
-        klass: KClass<*>
-) : RuntimeException("There are no default parsers for class $klass. Please provide a custom parser")
 
 private fun String.parseToString() = this
 
@@ -73,10 +72,6 @@ inline fun <reified T : Number> String.parseToDecimal(scale: Int): T {
     return when (T::class) {
         Double::class -> string.toDouble()
         BigDecimal::class -> string.toBigDecimal()
-        else -> throw NoDecimalParserForClass(T::class)
+        else -> throw FileParserException("There are no default decimal parsers for class ${T::class}. Please use a custom parser instead.")
     } as T
 }
-
-class NoDecimalParserForClass(
-        klass: KClass<*>
-) : RuntimeException("There are no default decimal parsers for class $klass. Please use a custom parser instead.")
