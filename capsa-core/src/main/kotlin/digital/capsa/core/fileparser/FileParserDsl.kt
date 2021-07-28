@@ -45,7 +45,7 @@ class TransformerBuilder(
         val index: Int
 ) {
     inline fun <reified R> field(
-            name: String,
+            name: String? = null,
             from: Int,
             toExclusive: Int,
             default: () -> R? = { null },
@@ -58,10 +58,12 @@ class TransformerBuilder(
     }
 
     inline fun <reified R> mandatoryField(
-            name: String,
+            name: String? = null,
             from: Int,
             toExclusive: Int,
-            default: () -> R = { throw FileParserException("The field $name is mandatory") },
+            default: () -> R = {
+                throw FileParserException(name?.let { "The field $name is mandatory" } ?: "Field is mandatory")
+            },
             noinline parser: ((String) -> R)? = null
     ): R {
         val str = readField(from, toExclusive)
@@ -71,7 +73,7 @@ class TransformerBuilder(
     }
 
     fun readField(from: Int,
-                          toExclusive: Int): String {
+                  toExclusive: Int): String {
         return if (line.length >= toExclusive) line.substring(from, toExclusive).trim() else ""
     }
 }
