@@ -7,10 +7,10 @@ import java.time.LocalTime
 import kotlin.reflect.KClass
 import kotlin.reflect.full.isSubclassOf
 
-internal inline fun <reified T> defaultTypeParser(parse: String): T = parse.parseToType(T::class)
+inline fun <reified T> defaultTypeParser(parse: String): T = parse.parseToType(T::class)
 
 @OptIn(ExperimentalUnsignedTypes::class)
-internal fun <T> String.parseToType(type: KClass<*>): T {
+fun <T> String.parseToType(type: KClass<*>): T {
     if (type.isSubclassOf(Enum::class)) return parseToEnum(type) as T
 
     return when (type) {
@@ -31,7 +31,7 @@ internal fun <T> String.parseToType(type: KClass<*>): T {
 }
 
 class NoParserForClass(
-    klass: KClass<*>
+        klass: KClass<*>
 ) : RuntimeException("There are no default parsers for class $klass. Please provide a custom parser")
 
 private fun String.parseToString() = this
@@ -65,8 +65,7 @@ private fun String.parseToEnum(enumClass: KClass<*>): Enum<*> {
     return enumConstants.first { it.name == this }
 }
 
-@PublishedApi
-internal inline fun <reified T : Number> String.parseToDecimal(scale: Int): T {
+inline fun <reified T : Number> String.parseToDecimal(scale: Int): T {
     val builder = StringBuilder(this)
     builder.insert(this.length - scale, '.')
     val string = builder.toString()
@@ -78,7 +77,6 @@ internal inline fun <reified T : Number> String.parseToDecimal(scale: Int): T {
     } as T
 }
 
-@PublishedApi
-internal class NoDecimalParserForClass(
-    klass: KClass<*>
+class NoDecimalParserForClass(
+        klass: KClass<*>
 ) : RuntimeException("There are no default decimal parsers for class $klass. Please use a custom parser instead.")
