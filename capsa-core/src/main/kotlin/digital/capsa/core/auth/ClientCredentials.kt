@@ -14,6 +14,7 @@ import org.springframework.web.client.RestClientException
 import org.springframework.web.client.RestTemplate
 import java.time.ZonedDateTime
 import javax.xml.bind.DatatypeConverter
+import org.slf4j.MDC
 
 @Configuration
 class ClientCredentials {
@@ -84,12 +85,15 @@ class ClientCredentials {
 
     private fun retrieveAuthToken(scope: String): AuthToken {
         val requestHeaders = HttpHeaders()
+
         requestHeaders.add(
             "Authorization", "Basic " +
                     DatatypeConverter.printBase64Binary(
                         "$authTokenServiceClientId:$authTokenServiceClientSecret".toByteArray()
                     )
         )
+        requestHeaders.set("X-Correlation-ID", MDC.get("X-Correlation-ID"))
+
         requestHeaders.contentType = MediaType.APPLICATION_FORM_URLENCODED
         requestHeaders.accept = listOf(MediaType.APPLICATION_JSON)
 
