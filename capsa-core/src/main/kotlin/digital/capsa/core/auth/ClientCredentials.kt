@@ -84,18 +84,19 @@ class ClientCredentials {
     }
 
     private fun retrieveAuthToken(scope: String): AuthToken {
-        val requestHeaders = HttpHeaders()
+        val requestHeaders = HttpHeaders().apply {
+            add(
+                "Authorization", "Basic " +
+                        DatatypeConverter.printBase64Binary(
+                            "$authTokenServiceClientId:$authTokenServiceClientSecret".toByteArray()
+                        )
+            )
+            MDC.get("X-Correlation-ID")?.let { set("X-Correlation-ID", it) }
+            contentType = MediaType.APPLICATION_FORM_URLENCODED
+            accept = listOf(MediaType.APPLICATION_JSON)
+        }
 
-        requestHeaders.add(
-            "Authorization", "Basic " +
-                    DatatypeConverter.printBase64Binary(
-                        "$authTokenServiceClientId:$authTokenServiceClientSecret".toByteArray()
-                    )
-        )
-        requestHeaders.set("X-Correlation-ID", MDC.get("X-Correlation-ID"))
 
-        requestHeaders.contentType = MediaType.APPLICATION_FORM_URLENCODED
-        requestHeaders.accept = listOf(MediaType.APPLICATION_JSON)
 
         val params: MultiValueMap<String, String> = LinkedMultiValueMap()
         params.add("grant_type", "client_credentials")
