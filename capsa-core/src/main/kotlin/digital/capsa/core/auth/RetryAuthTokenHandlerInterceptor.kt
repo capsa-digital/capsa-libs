@@ -13,9 +13,10 @@ import org.springframework.http.client.ClientHttpRequestInterceptor
 import org.springframework.http.client.ClientHttpResponse
 
 @Configuration
-open class RetryAuthTokenHandlerInterceptor(
-    var clientCredentials: ClientCredentials
-    ) : ClientHttpRequestInterceptor {
+open class RetryAuthTokenHandlerInterceptor : ClientHttpRequestInterceptor {
+
+    @Autowired
+    private lateinit var clientCredentials: ClientCredentials
 
     override fun intercept(
         request: HttpRequest,
