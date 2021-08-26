@@ -30,6 +30,9 @@ class RetryAuthTokenHandlerInterceptor : ClientHttpRequestInterceptor {
             if (accessToken.isNotBlank()) {
                 request.headers["Authorization"] = accessToken
                 logger.warn("Retry call for ${request.uri}")
+                if (response != null) {
+                    response.close()
+                }
                 response = execution.execute(request, body)
             }
         }
