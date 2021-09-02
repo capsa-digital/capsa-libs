@@ -10,42 +10,60 @@ class Parser(private val bufferedReader: BufferedReader) {
 
     private var lineCount: Int = 0
 
-    private val lines: List<Line> = bufferedReader.lineSequence().map {
-        Line(it, null)
+    private val records: List<Record> = bufferedReader.lineSequence().map {
+        Record(it)
     }.toMutableList().also {
         bufferedReader.close()
     }
 
     fun header(
+        length:Int? = null,
         recordBuilder: TransformerBuilder.() -> Any
     ) {
-        val headerIndex = lineCount++
-        lines[headerIndex].obj = TransformerBuilder(lines[headerIndex].str, headerIndex).recordBuilder()
-    }
-
-    fun line(
-        recordBuilder: TransformerBuilder.() -> Any
-    ) {
-        while (lineCount < lines.size) {
-            val lineIndex = lineCount++
-            lines[lineIndex].obj = TransformerBuilder(lines[lineIndex].str, lineIndex).recordBuilder()
+        if (lineCount < records.size) {
+            processLine(lineCount++, length, recordBuilder)
         }
     }
 
-    fun getRecords(): List<Any?> {
-        return lines.map { it.obj }
+    fun line(
+        length:Int? = null,
+        recordBuilder: TransformerBuilder.() -> Any
+    ) {
+        while (lineCount < records.size) {
+            processLine(lineCount++, length, recordBuilder)
+        }
     }
 
-    private data class Line(
-        val str: String,
-        var obj: Any?
-    )
+    private fun processLine(lineIndex: Int, length:Int?, recordBuilder: TransformerBuilder.() -> Any) {
+        try {
+            length?.let {
+               if(records[lineIndex].str.length != it) throw FileParserException("Line length should be $length but was ${records[lineIndex].str.length}")
+            }
+            val builder = TransformerBuilder(records[lineIndex].str, lineIndex)
+            records[lineIndex].value = builder.recordBuilder()
+        } catch (e: Exception) {
+            if (e is FileParserException) {
+                records[lineIndex].error = e
+            } else {
+                records[lineIndex].error = FileParserException("Unknown parser exception", e)
+            }
+        }
+    }
+
+    fun getRecords(): List<Record> {
+        return records.toList()
+    }
 }
+
+data class Record(
+    val str: String,
+    var value: Any? = null,
+    var error: FileParserException? = null
+)
 
 class TransformerBuilder(
     private val line: String,
     val index: Int
-
 ) {
     inline fun <reified R> field(
         from: Int,
@@ -56,7 +74,7 @@ class TransformerBuilder(
     ): R? {
         val str = readField(from, toExclusive)
         return if (str.isNotBlank()) {
-            parser?.let { parser(str) } ?: defaultTypeParser<R>(str)
+            parser?.let { parser(str) } ?: defaultTypeParser(str)
         } else default.invoke()
     }
 
