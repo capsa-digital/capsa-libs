@@ -37,7 +37,7 @@ class Parser(private val bufferedReader: BufferedReader) {
     private fun processLine(lineIndex: Int, length:Int?, recordBuilder: TransformerBuilder.() -> Any) {
         try {
             length?.let {
-               if(records[lineIndex].str.length != it) throw FileParserException("Line length should be $length but was ${records[lineIndex].str.length}")
+               if(records[lineIndex].str.length != it) throw FileParserException("Line $lineIndex length should be $length but was ${records[lineIndex].str.length}")
             }
             val builder = TransformerBuilder(records[lineIndex].str, lineIndex)
             records[lineIndex].value = builder.recordBuilder()
