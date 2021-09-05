@@ -1,6 +1,5 @@
-package digital.capsa.it
+package digital.capsa.it.xml
 
-import digital.capsa.it.xml.XmlPathModifier
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals

@@ -1,7 +1,6 @@
-package digital.capsa.it
+package digital.capsa.it.json
 
-import digital.capsa.it.dsl.given
-import digital.capsa.it.json.JsonPathValidator
+import digital.capsa.it.gherkin.given
 import digital.capsa.it.validation.OpType
 import digital.capsa.it.validation.ValidationRule
 import org.junit.jupiter.api.Tag

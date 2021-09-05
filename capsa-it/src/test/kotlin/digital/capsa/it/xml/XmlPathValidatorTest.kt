@@ -1,9 +1,8 @@
-package digital.capsa.it
+package digital.capsa.it.xml
 
-import digital.capsa.it.dsl.given
+import digital.capsa.it.gherkin.given
 import digital.capsa.it.validation.OpType
 import digital.capsa.it.validation.ValidationRule
-import digital.capsa.it.xml.XmlPathValidator
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 

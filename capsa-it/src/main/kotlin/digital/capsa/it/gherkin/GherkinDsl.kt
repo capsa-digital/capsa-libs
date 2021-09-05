@@ -1,8 +1,8 @@
-package digital.capsa.it.dsl
+package digital.capsa.it.gherkin
 
-import digital.capsa.it.gherkin.Given
-import digital.capsa.it.gherkin.On
-import digital.capsa.it.gherkin.Then
+import digital.capsa.it.dsl.Given
+import digital.capsa.it.dsl.On
+import digital.capsa.it.dsl.Then
 
 fun <S> given(block: () -> S): Given<S> = Given(block())
 

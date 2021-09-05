@@ -1,6 +1,5 @@
-package digital.capsa.it
+package digital.capsa.it.json
 
-import digital.capsa.it.json.JsonPathModifier
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
