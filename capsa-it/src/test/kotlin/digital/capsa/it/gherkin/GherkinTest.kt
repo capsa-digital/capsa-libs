@@ -1,6 +1,5 @@
 package digital.capsa.it.gherkin
 
-import digital.capsa.core.logger
 import kotlin.test.assertEquals
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test

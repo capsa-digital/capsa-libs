@@ -32,9 +32,9 @@ class XmlPathValidatorTest {
         }.then {
             XmlPathValidator.assertXml(
                 it, listOf(
-                    ValidationRule("//element/data", OpType.equal, listOf("abcd", "bcde")),
-                    ValidationRule("//element[id='12345']/data", OpType.equal, "abcd")
-                )
+                ValidationRule("//element/data", OpType.equal, listOf("abcd", "bcde")),
+                ValidationRule("//element[id='12345']/data", OpType.equal, "abcd")
+            )
             )
         }
     }
