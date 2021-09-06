@@ -109,7 +109,7 @@ class FileParserDslTest {
                     date1 = field(7, 17, "field3")
                 )
             }
-            line (22) {
+            line(22) {
                 Item(
                     string1 = field(0, 4, "field1"),
                     string2 = mandatoryField(4, 7, "field2"),
