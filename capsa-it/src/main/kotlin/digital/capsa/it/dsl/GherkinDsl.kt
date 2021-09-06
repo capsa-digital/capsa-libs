@@ -1,9 +1,7 @@
 package digital.capsa.it.dsl
 
-import digital.capsa.it.gherkin.Given
-import digital.capsa.it.gherkin.On
-import digital.capsa.it.gherkin.Then
-
+// TODO remove
+@Deprecated("use digital.capsa.it.gherkin.given()")
 fun <S> given(block: () -> S): Given<S> = Given(block())
 
 class Given<S>(private val setup: S) {
