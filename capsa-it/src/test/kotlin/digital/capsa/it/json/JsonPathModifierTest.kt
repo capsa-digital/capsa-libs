@@ -1,9 +1,8 @@
-package digital.capsa.it
+package digital.capsa.it.json
 
-import digital.capsa.it.json.JsonPathModifier
+import kotlin.test.assertEquals
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
-import kotlin.test.assertEquals
 
 @Tag("unit")
 class JsonPathModifierTest {
@@ -25,9 +24,9 @@ class JsonPathModifierTest {
               "num": 23456
             }]
         """.trimIndent(), mapOf(
-                    "@[?(@.id == '12345')].data" to "qwert",
-                    "@[?(@.id == '23456')].data" to "asdfg"
-                )
+                "@[?(@.id == '12345')].data" to "qwert",
+                "@[?(@.id == '23456')].data" to "asdfg"
+            )
             )
         )
     }

@@ -2,6 +2,9 @@ package digital.capsa.core.auth
 
 import digital.capsa.core.exceptions.AuthTokenException
 import digital.capsa.core.logger
+import java.time.ZonedDateTime
+import javax.xml.bind.DatatypeConverter
+import org.slf4j.MDC
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpEntity
@@ -12,9 +15,6 @@ import org.springframework.util.LinkedMultiValueMap
 import org.springframework.util.MultiValueMap
 import org.springframework.web.client.RestClientException
 import org.springframework.web.client.RestTemplate
-import java.time.ZonedDateTime
-import javax.xml.bind.DatatypeConverter
-import org.slf4j.MDC
 
 @Configuration
 class ClientCredentials {
@@ -87,15 +87,14 @@ class ClientCredentials {
         val requestHeaders = HttpHeaders().apply {
             add(
                 "Authorization", "Basic " +
-                        DatatypeConverter.printBase64Binary(
-                            "$authTokenServiceClientId:$authTokenServiceClientSecret".toByteArray()
-                        )
+                DatatypeConverter.printBase64Binary(
+                    "$authTokenServiceClientId:$authTokenServiceClientSecret".toByteArray()
+                )
             )
             MDC.get("X-Correlation-ID")?.let { set("X-Correlation-ID", it) }
             contentType = MediaType.APPLICATION_FORM_URLENCODED
             accept = listOf(MediaType.APPLICATION_JSON)
         }
-
 
 
         val params: MultiValueMap<String, String> = LinkedMultiValueMap()

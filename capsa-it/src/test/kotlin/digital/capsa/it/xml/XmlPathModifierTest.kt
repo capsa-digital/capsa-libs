@@ -1,9 +1,8 @@
-package digital.capsa.it
+package digital.capsa.it.xml
 
-import digital.capsa.it.xml.XmlPathModifier
+import kotlin.test.assertEquals
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
-import kotlin.test.assertEquals
 
 @Tag("unit")
 class XmlPathModifierTest {
@@ -46,9 +45,9 @@ class XmlPathModifierTest {
                        </element>
                     </root>
                     """.trimIndent(), mapOf(
-                        "//element[id='12345']/data" to "qwert",
-                        "//element[id='23456']/data" to "asdfg"
-                    )
+                    "//element[id='12345']/data" to "qwert",
+                    "//element[id='23456']/data" to "asdfg"
+                )
                 )
             )
         )

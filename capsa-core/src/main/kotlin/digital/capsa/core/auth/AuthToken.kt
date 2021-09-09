@@ -1,6 +1,5 @@
 package digital.capsa.core.auth
 
-import java.time.Instant
 import java.time.ZonedDateTime
 import java.util.concurrent.atomic.AtomicInteger
 

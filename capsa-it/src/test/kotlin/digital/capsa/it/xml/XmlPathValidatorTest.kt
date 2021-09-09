@@ -1,9 +1,8 @@
-package digital.capsa.it
+package digital.capsa.it.xml
 
-import digital.capsa.it.dsl.given
+import digital.capsa.it.gherkin.given
 import digital.capsa.it.validation.OpType
 import digital.capsa.it.validation.ValidationRule
-import digital.capsa.it.xml.XmlPathValidator
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 
@@ -33,9 +32,9 @@ class XmlPathValidatorTest {
         }.then {
             XmlPathValidator.assertXml(
                 it, listOf(
-                    ValidationRule("//element/data", OpType.equal, listOf("abcd", "bcde")),
-                    ValidationRule("//element[id='12345']/data", OpType.equal, "abcd")
-                )
+                ValidationRule("//element/data", OpType.equal, listOf("abcd", "bcde")),
+                ValidationRule("//element[id='12345']/data", OpType.equal, "abcd")
+            )
             )
         }
     }
