@@ -17,7 +17,7 @@ class Parser(private val bufferedReader: BufferedReader) {
     }
 
     fun header(
-        length:Int? = null,
+        length: Int? = null,
         recordBuilder: TransformerBuilder.() -> Any
     ) {
         if (lineCount < records.size) {
@@ -26,7 +26,7 @@ class Parser(private val bufferedReader: BufferedReader) {
     }
 
     fun line(
-        length:Int? = null,
+        length: Int? = null,
         recordBuilder: TransformerBuilder.() -> Any
     ) {
         while (lineCount < records.size) {
@@ -34,10 +34,10 @@ class Parser(private val bufferedReader: BufferedReader) {
         }
     }
 
-    private fun processLine(lineIndex: Int, length:Int?, recordBuilder: TransformerBuilder.() -> Any) {
+    private fun processLine(lineIndex: Int, length: Int?, recordBuilder: TransformerBuilder.() -> Any) {
         try {
             length?.let {
-               if(records[lineIndex].str.length != it) throw FileParserException("Line length should be $length but was ${records[lineIndex].str.length}")
+                if (records[lineIndex].str.length != it) throw FileParserException("Line length should be $length but was ${records[lineIndex].str.length}")
             }
             val builder = TransformerBuilder(records[lineIndex].str, lineIndex)
             records[lineIndex].value = builder.recordBuilder()
@@ -74,7 +74,11 @@ class TransformerBuilder(
     ): R? {
         val str = readField(from, toExclusive)
         return if (str.isNotBlank()) {
-            parser?.let { parser(str) } ?: defaultTypeParser(str)
+            if (parser != null) {
+                parser(str)
+            } else {
+                defaultTypeParser(str)
+            }
         } else default.invoke()
     }
 
@@ -89,7 +93,11 @@ class TransformerBuilder(
     ): R {
         val str = readField(from, toExclusive)
         return if (str.isNotBlank()) {
-            parser?.let { parser(str) } ?: defaultTypeParser(str)
+            if (parser != null) {
+                parser(str)
+            } else {
+                defaultTypeParser(str)
+            }
         } else default.invoke()
     }
 
