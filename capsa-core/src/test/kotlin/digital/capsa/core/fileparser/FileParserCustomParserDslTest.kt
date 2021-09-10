@@ -4,7 +4,6 @@ import digital.capsa.core.logger
 import java.io.BufferedReader
 import java.io.StringReader
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
@@ -20,7 +19,7 @@ class FileParserCustomParserDslTest {
         return try {
             LocalDate.parse(date)
         } catch (e: Exception) {
-            logger.info("Can't parse date",e)
+            logger.info("Can't parse date", e)
             null
         }
     }
