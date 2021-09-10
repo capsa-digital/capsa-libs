@@ -71,36 +71,24 @@ class RecordParser(
         toExclusive: Int,
         name: String? = null,
         default: () -> R? = { null },
+        ignoreError: Boolean = false,
         noinline parser: ((String) -> R?)? = null
     ): R? {
         val str = readField(from, toExclusive)
         return if (str.isNotBlank()) {
-            if (parser != null) {
-                parser(str)
-            } else {
-                defaultTypeParser(str)
-            }
-        } else default.invoke()
-    }
-
-    inline fun <reified R> nullableField(
-        from: Int,
-        toExclusive: Int,
-        name: String? = null,
-        default: () -> R? = { null },
-        noinline parser: ((String) -> R)? = null
-    ): R? {
-        val str = readField(from, toExclusive)
-        return if (str.isNotBlank()) {
-            if (parser != null) {
-                try {
+            try {
+                if (parser != null) {
                     parser(str)
-                } catch (e:RuntimeException) {
+                } else {
+                    defaultTypeParser(str)
+                }
+            } catch (e: Exception) {
+                if (ignoreError) {
                     issues.add(FileParserWarning(e.message ?: "Unknown parser warning"))
                     null
+                } else {
+                    throw e
                 }
-            } else {
-                defaultTypeParser(str)
             }
         } else default.invoke()
     }
