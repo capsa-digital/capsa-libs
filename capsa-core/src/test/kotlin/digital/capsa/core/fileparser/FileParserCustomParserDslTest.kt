@@ -53,7 +53,7 @@ class FileParserCustomParserDslTest {
                     string1 = optionalField(0, 4, "field1"),
                     string2 = mandatoryField(4, 7, "field2"),
                     int1 = optionalField(7, 10, "field3"),
-                    date1 = nullableField(10, 21, "field4", parser = ::dateParser),
+                    date1 = optionalField(10, 21, "field4", ignoreError = true, parser = ::dateParser),
                     date2 = mandatoryField(21, 31, "field4", parser = ::dateParser)
                 )
             }
