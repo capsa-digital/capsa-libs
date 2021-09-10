@@ -41,7 +41,7 @@ class Parser(private val bufferedReader: BufferedReader) {
                     records[lineIndex].issues.add(FileParserError("Line length should be $length but was ${records[lineIndex].str.length}"))
                 }
             }
-            val recordParser = RecordParser(records[lineIndex].str)
+            val recordParser = RecordParser(records[lineIndex].str, lineIndex)
             records[lineIndex].value = recordParser.parse()
             records[lineIndex].issues.addAll(recordParser.issues)
         } catch (e: Exception) {
@@ -61,7 +61,8 @@ data class Record(
 )
 
 class RecordParser(
-    private val line: String
+    private val line: String,
+    val index: Int
 ) {
     var issues: MutableList<FileParserIssue> = mutableListOf()
 
