@@ -93,11 +93,7 @@ class TransformerBuilder(
     ): R {
         val str = readField(from, toExclusive)
         return if (str.isNotBlank()) {
-            if (parser != null) {
-                parser(str)
-            } else {
-                defaultTypeParser(str)
-            }
+            parser?.let { parser(str) } ?: defaultTypeParser(str)
         } else default.invoke()
     }
 

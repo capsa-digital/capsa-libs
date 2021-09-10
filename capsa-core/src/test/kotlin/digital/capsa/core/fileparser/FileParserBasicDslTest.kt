@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 
 @Tag("unit")
-class FileParserDslTest {
+class FileParserBasicDslTest {
 
     data class Header(val string1: String?, val int1: Int, val date1: LocalDate?)
 
