@@ -18,29 +18,29 @@ class Parser(private val bufferedReader: BufferedReader) {
 
     fun header(
         length: Int? = null,
-        recordBuilder: TransformerBuilder.() -> Any
+        parse: RecordParser.() -> Any
     ) {
         if (lineCount < records.size) {
-            processLine(lineCount++, length, recordBuilder)
+            processLine(lineCount++, length, parse)
         }
     }
 
     fun line(
         length: Int? = null,
-        recordBuilder: TransformerBuilder.() -> Any
+        parse: RecordParser.() -> Any
     ) {
         while (lineCount < records.size) {
-            processLine(lineCount++, length, recordBuilder)
+            processLine(lineCount++, length, parse)
         }
     }
 
-    private fun processLine(lineIndex: Int, length: Int?, recordBuilder: TransformerBuilder.() -> Any) {
+    private fun processLine(lineIndex: Int, length: Int?, parse: RecordParser.() -> Any) {
         try {
             length?.let {
                 if (records[lineIndex].str.length != it) throw FileParserException("Line length should be $length but was ${records[lineIndex].str.length}")
             }
-            val builder = TransformerBuilder(records[lineIndex].str, lineIndex)
-            records[lineIndex].value = builder.recordBuilder()
+            val recordParser = RecordParser(records[lineIndex].str, lineIndex)
+            records[lineIndex].value = recordParser.parse()
         } catch (e: Exception) {
             if (e is FileParserException) {
                 records[lineIndex].error = e
@@ -61,7 +61,7 @@ data class Record(
     var error: FileParserException? = null
 )
 
-class TransformerBuilder(
+class RecordParser(
     private val line: String,
     val index: Int
 ) {
