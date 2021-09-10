@@ -29,17 +29,17 @@ class FileParserBasicDslTest {
         ) {
             header(17) {
                 Header(
-                    string1 = field(0, 4, "field1"),
+                    string1 = optionalField(0, 4, "field1"),
                     int1 = mandatoryField(4, 7, "field2"),
-                    date1 = field(7, 17, "field3")
+                    date1 = optionalField(7, 17, "field3")
                 )
             }
             line {
                 Item(
-                    string1 = field(0, 4, "field1"),
+                    string1 = optionalField(0, 4, "field1"),
                     string2 = mandatoryField(4, 7, "field2"),
-                    int1 = field(7, 10, "field3"),
-                    date1 = field(10, 20, "field4")
+                    int1 = optionalField(7, 10, "field3"),
+                    date1 = optionalField(10, 20, "field4")
                 )
             }
         }
@@ -72,17 +72,17 @@ class FileParserBasicDslTest {
         ) {
             header {
                 Header(
-                    string1 = field(0, 4, "field1"),
+                    string1 = optionalField(0, 4, "field1"),
                     int1 = mandatoryField(4, 7, "field2"),
-                    date1 = field(7, 17, "field3")
+                    date1 = optionalField(7, 17, "field3")
                 )
             }
             line {
                 Item(
-                    string1 = field(0, 4, "field1"),
+                    string1 = optionalField(0, 4, "field1"),
                     string2 = mandatoryField(4, 7, "field2"),
-                    int1 = field(7, 10, "field3"),
-                    date1 = field(10, 20, "field4")
+                    int1 = optionalField(7, 10, "field3"),
+                    date1 = optionalField(10, 20, "field4")
                 )
             }
         }
@@ -104,22 +104,22 @@ class FileParserBasicDslTest {
         ) {
             header(18) {
                 Header(
-                    string1 = field(0, 4, "field1"),
+                    string1 = optionalField(0, 4, "field1"),
                     int1 = mandatoryField(4, 7, "field2"),
-                    date1 = field(7, 17, "field3")
+                    date1 = optionalField(7, 17, "field3")
                 )
             }
             line(22) {
                 Item(
-                    string1 = field(0, 4, "field1"),
+                    string1 = optionalField(0, 4, "field1"),
                     string2 = mandatoryField(4, 7, "field2"),
-                    int1 = field(7, 10, "field3"),
-                    date1 = field(10, 20, "field4")
+                    int1 = optionalField(7, 10, "field3"),
+                    date1 = optionalField(10, 20, "field4")
                 )
             }
         }
-        Assertions.assertEquals("Line length should be 18 but was 17", parser.getRecords()[0].error?.message)
-        Assertions.assertEquals("Line length should be 22 but was 20", parser.getRecords()[1].error?.message)
+        Assertions.assertEquals("Line length should be 18 but was 17", parser.getRecords()[0].issues[0].message)
+        Assertions.assertEquals("Line length should be 22 but was 20", parser.getRecords()[1].issues[0].message)
     }
 
 }
