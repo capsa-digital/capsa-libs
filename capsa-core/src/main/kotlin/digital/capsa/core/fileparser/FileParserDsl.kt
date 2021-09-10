@@ -37,16 +37,15 @@ class Parser(private val bufferedReader: BufferedReader) {
     private fun processLine(lineIndex: Int, length: Int?, parse: RecordParser.() -> Any) {
         try {
             length?.let {
-                if (records[lineIndex].str.length != it) throw FileParserException("Line length should be $length but was ${records[lineIndex].str.length}")
+                if (records[lineIndex].str.length != it) {
+                    records[lineIndex].issues.add(FileParserError("Line length should be $length but was ${records[lineIndex].str.length}"))
+                }
             }
-            val recordParser = RecordParser(records[lineIndex].str, lineIndex)
+            val recordParser = RecordParser(records[lineIndex].str)
             records[lineIndex].value = recordParser.parse()
+            records[lineIndex].issues.addAll(recordParser.issues)
         } catch (e: Exception) {
-            if (e is FileParserException) {
-                records[lineIndex].error = e
-            } else {
-                records[lineIndex].error = FileParserException("Unknown parser exception", e)
-            }
+            records[lineIndex].issues.add(FileParserError(e.message ?: "Unknown parser error"))
         }
     }
 
@@ -58,14 +57,15 @@ class Parser(private val bufferedReader: BufferedReader) {
 data class Record(
     val str: String,
     var value: Any? = null,
-    var error: FileParserException? = null
+    var issues: MutableList<FileParserIssue> = mutableListOf()
 )
 
 class RecordParser(
-    private val line: String,
-    val index: Int
+    private val line: String
 ) {
-    inline fun <reified R> field(
+    var issues: MutableList<FileParserIssue> = mutableListOf()
+
+    inline fun <reified R> optionalField(
         from: Int,
         toExclusive: Int,
         name: String? = null,
@@ -76,6 +76,28 @@ class RecordParser(
         return if (str.isNotBlank()) {
             if (parser != null) {
                 parser(str)
+            } else {
+                defaultTypeParser(str)
+            }
+        } else default.invoke()
+    }
+
+    inline fun <reified R> nullableField(
+        from: Int,
+        toExclusive: Int,
+        name: String? = null,
+        default: () -> R? = { null },
+        noinline parser: ((String) -> R)? = null
+    ): R? {
+        val str = readField(from, toExclusive)
+        return if (str.isNotBlank()) {
+            if (parser != null) {
+                try {
+                    parser(str)
+                } catch (e:RuntimeException) {
+                    issues.add(FileParserWarning(e.message ?: "Unknown parser warning"))
+                    null
+                }
             } else {
                 defaultTypeParser(str)
             }
@@ -112,5 +134,10 @@ fun parser(
     return parser
 }
 
-open class FileParserException(message: String, cause: Throwable? = null) :
-    RuntimeException(message, cause)
+open class FileParserWarning(message: String = "Unknown parser warning") : FileParserIssue(message)
+
+open class FileParserError(message: String = "Unknown parser error") : FileParserIssue(message)
+
+abstract class FileParserIssue(var message: String)
+
+open class FileParserException(message: String, cause: Throwable? = null) : RuntimeException(message, cause)
