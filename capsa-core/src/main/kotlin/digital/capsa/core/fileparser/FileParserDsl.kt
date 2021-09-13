@@ -123,10 +123,10 @@ fun parser(
     return parser
 }
 
-open class FileParserWarning(message: String = "Unknown parser warning") : FileParserIssue(message)
+data class FileParserWarning(override var message: String = "Unknown parser warning") : FileParserIssue(message)
 
-open class FileParserError(message: String = "Unknown parser error") : FileParserIssue(message)
+data class FileParserError(override var message: String = "Unknown parser error") : FileParserIssue(message)
 
-abstract class FileParserIssue(var message: String)
+abstract class FileParserIssue(open var message: String)
 
 open class FileParserException(message: String, cause: Throwable? = null) : RuntimeException(message, cause)
