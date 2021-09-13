@@ -74,6 +74,9 @@ class FileParserCustomParserDslTest {
         Assertions.assertEquals("f1", item.string2)
         Assertions.assertEquals(34, item.int1)
         Assertions.assertEquals(null, item.date1)
+        var issues = parser.getRecords()[2].issues
+        Assertions.assertEquals("Text '2021-05-44' could not be parsed: Invalid value for DayOfMonth (valid values 1 - 28/31): 44", issues[0].message)
+        Assertions.assertEquals(FileParserWarning::class.java, issues[0].javaClass)
     }
 }
 
