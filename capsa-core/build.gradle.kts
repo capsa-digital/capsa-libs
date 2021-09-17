@@ -1,4 +1,5 @@
 dependencies {
+    implementation("com.atlassian.oai:swagger-request-validator-wiremock:2.18.1")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
