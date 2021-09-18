@@ -14,7 +14,7 @@ import io.swagger.v3.parser.OpenAPIV3Parser
 import io.swagger.v3.parser.util.ResolverFully
 import java.net.URI
 
-class SchemaValidator {
+class SwaggerValidator {
 
     private val validator: HashMap<String, OpenApiInteractionValidator> = hashMapOf()
 
@@ -29,7 +29,7 @@ class SchemaValidator {
         val mockIdentifier: String = event.stubMapping.metadata["mockIdentifier"].toString()
         var report = ValidationReport.empty()
 
-        if (SchemaValidator::class.java.getResource(swaggerFile) != null) {
+        if (SwaggerValidator::class.java.getResource(swaggerFile) != null) {
             if (!validator.contains(swaggerFile)) {
                 validator[swaggerFile] = OpenApiInteractionValidator
                     .createFor(
