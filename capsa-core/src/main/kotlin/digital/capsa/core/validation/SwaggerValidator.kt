@@ -1,4 +1,4 @@
-package digital.capsa.core.schemavalidation
+package digital.capsa.core.validation
 
 import com.atlassian.oai.validator.OpenApiInteractionValidator
 import com.atlassian.oai.validator.model.Request
