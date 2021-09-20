@@ -25,11 +25,11 @@ class SwaggerValidator {
     }
 
     fun validateEvent(event: ServeEvent) {
-        val swaggerFile: String = event.stubMapping.metadata["swaggerFile"].toString()
-        val mockIdentifier: String = event.stubMapping.metadata["mockIdentifier"].toString()
+        val swaggerFile: String? = event.stubMapping.metadata?.let { it["swaggerFile"].toString() }
+        val mockIdentifier: String? = event.stubMapping.metadata?.let { it["mockIdentifier"].toString() }
         var report = ValidationReport.empty()
 
-        if (SwaggerValidator::class.java.getResource(swaggerFile) != null) {
+        if (swaggerFile != null && mockIdentifier != null && SwaggerValidator::class.java.getResource(swaggerFile) != null) {
             if (!validator.contains(swaggerFile)) {
                 validator[swaggerFile] = OpenApiInteractionValidator
                     .createFor(
