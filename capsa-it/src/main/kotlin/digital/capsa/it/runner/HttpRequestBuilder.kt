@@ -1,6 +1,7 @@
 package digital.capsa.it.runner
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.node.TextNode
 import digital.capsa.it.json.JsonPathModifier
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -68,7 +69,8 @@ class HttpRequestBuilder(private val objectMapper: ObjectMapper, private val req
 
         httpRequest.headers.forEach { (key, value) -> headers[key] = value }
 
-        val requestEntity = HttpEntity(httpRequest.body.toString(), headers)
+        val body = httpRequest.body?.takeIf { it is TextNode }?.textValue() ?: httpRequest.body.toString()
+        val requestEntity = HttpEntity(body, headers)
 
         val response = restTemplate.exchange(
             URI(httpRequest.schema, null, httpRequest.host, httpRequest.port,
