@@ -38,7 +38,7 @@ class Parser(private val bufferedReader: BufferedReader) {
         try {
             length?.let {
                 if (records[lineIndex].str.length != it) {
-                    records[lineIndex].issues.add(FileParserError("Line length should be $length but was ${records[lineIndex].str.length}"))
+                    records[lineIndex].issues.add(FileParserError("Line length should be ${length + 1} but was ${records[lineIndex].str.length + 1}"))
                 }
             }
             val recordParser = RecordParser(records[lineIndex].str, lineIndex)
