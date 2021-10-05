@@ -118,8 +118,8 @@ class FileParserBasicDslTest {
                 )
             }
         }
-        Assertions.assertEquals("Line length should be 19 but was 18", parser.getRecords()[0].issues[0].message)
-        Assertions.assertEquals("Line length should be 23 but was 21", parser.getRecords()[1].issues[0].message)
+        Assertions.assertEquals("Line length should be 18 but was 17", parser.getRecords()[0].issues[0].message)
+        Assertions.assertEquals("Line length should be 22 but was 20", parser.getRecords()[1].issues[0].message)
     }
 
 }
