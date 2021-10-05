@@ -38,6 +38,9 @@ class ClientCredentials {
     @Value("\${auth-token-service.basePath}")
     private lateinit var authTokenServiceBasePath: String
 
+    @Value("\${auth-token-service.path}")
+    private lateinit var authTokenServicePath: String
+
     @Value("\${auth-token-service.client-id}")
     private lateinit var authTokenServiceClientId: String
 
@@ -47,12 +50,9 @@ class ClientCredentials {
     @Value("\${auth-token-service.timeout-buffer:20}")
     private lateinit var authTokenServiceTimeoutBuffer: String
 
-    @Value("\${auth-token-service.endPath}")
-    private lateinit var authTokenServiceEndPath: String
-
     @Suppress("MaxLineLength")
     private val authTokenServiceBaseUri: String by lazy {
-        "$authTokenServiceSchema://$authTokenServiceHost:$authTokenServicePort/$authTokenServiceBasePath/$authTokenServiceEndPath"
+        "$authTokenServiceSchema://$authTokenServiceHost:$authTokenServicePort/$authTokenServiceBasePath/$authTokenServicePath"
     }
 
     fun getAuthToken(scope: String, forceRefresh: Boolean = false): String {
