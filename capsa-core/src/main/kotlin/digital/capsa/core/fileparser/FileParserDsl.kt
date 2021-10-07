@@ -61,7 +61,7 @@ data class Record(
 )
 
 class RecordParser(
-    private val line: String,
+    val line: String,
     val index: Int
 ) {
     var issues: MutableList<FileParserIssue> = mutableListOf()
