@@ -3,6 +3,7 @@ package digital.capsa.core.auth
 import digital.capsa.core.exceptions.AuthTokenException
 import digital.capsa.core.logger
 import org.slf4j.MDC
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpEntity
@@ -25,6 +26,9 @@ class ClientCredentials {
          */
         var authTokenCache: MutableMap<String, AuthToken> = mutableMapOf()
     }
+
+    @Autowired
+    private lateinit var restTemplate: RestTemplate
 
     @Value("\${auth-token-service.host}")
     private lateinit var authTokenServiceHost: String
@@ -105,7 +109,7 @@ class ClientCredentials {
         params.add("scope", scope)
 
         return try {
-            RestTemplate().exchange(
+            restTemplate.exchange(
                 authTokenServiceBaseUri,
                 HttpMethod.POST,
                 HttpEntity(params, requestHeaders),
