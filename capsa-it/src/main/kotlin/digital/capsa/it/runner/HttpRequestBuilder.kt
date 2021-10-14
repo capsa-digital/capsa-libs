@@ -8,7 +8,15 @@ import java.io.InputStreamReader
 import java.net.URI
 import java.util.stream.Collectors
 import org.apache.http.HttpHost
+import org.apache.http.config.RegistryBuilder
+import org.apache.http.conn.socket.ConnectionSocketFactory
+import org.apache.http.conn.socket.PlainConnectionSocketFactory
+import org.apache.http.conn.ssl.NoopHostnameVerifier
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory
 import org.apache.http.impl.client.HttpClientBuilder
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager
+import org.apache.http.ssl.SSLContexts
+import org.apache.http.ssl.TrustStrategy
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.ResponseEntity
@@ -17,6 +25,7 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory
 import org.springframework.stereotype.Component
 import org.springframework.web.client.ResponseErrorHandler
 import org.springframework.web.client.RestTemplate
+import javax.net.ssl.SSLContext
 
 @Component
 class HttpRequestBuilder(private val objectMapper: ObjectMapper, private val requestFile: String) {
@@ -92,9 +101,20 @@ class HttpRequestBuilder(private val objectMapper: ObjectMapper, private val req
         proxyPort: String?
     ):
         HttpComponentsClientHttpRequestFactory {
+        val acceptingTrustStrategy = TrustStrategy { _, _ -> true }
+        val sslContext: SSLContext = SSLContexts.custom().loadTrustMaterial(null, acceptingTrustStrategy)
+            .build()
+        val csf = SSLConnectionSocketFactory(sslContext, NoopHostnameVerifier.INSTANCE)
+        val socketFactoryRegistry = RegistryBuilder.create<ConnectionSocketFactory>()
+            .register("https", csf)
+            .register("http", PlainConnectionSocketFactory.getSocketFactory())
+            .build()
+
         val clientHttpRequestFactory = HttpComponentsClientHttpRequestFactory(
             HttpClientBuilder.create()
                 .setProxy(proxyHost?.let { HttpHost(it, proxyPort!!.toInt(), "http") })
+                .setConnectionManager(PoolingHttpClientConnectionManager(socketFactoryRegistry))
+                .setSSLSocketFactory(csf)
                 .build()
         )
         clientHttpRequestFactory.setConnectTimeout(connectTimeout)
