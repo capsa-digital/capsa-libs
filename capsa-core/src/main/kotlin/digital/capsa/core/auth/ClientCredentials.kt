@@ -18,9 +18,7 @@ import java.time.ZonedDateTime
 import javax.xml.bind.DatatypeConverter
 
 @Configuration
-class ClientCredentials(
-    private val restTemplate: RestTemplate
-) {
+class ClientCredentials {
 
     companion object {
         /*
@@ -28,6 +26,9 @@ class ClientCredentials(
          */
         var authTokenCache: MutableMap<String, AuthToken> = mutableMapOf()
     }
+
+    @Autowired
+    private lateinit var restTemplate: RestTemplate
 
     @Value("\${auth-token-service.host}")
     private lateinit var authTokenServiceHost: String
