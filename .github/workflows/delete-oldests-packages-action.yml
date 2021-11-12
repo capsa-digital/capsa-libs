@@ -1,0 +1,10 @@
+name: delete-oldest-packages
+on: [push]
+jobs:
+  check-bats-version:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/delete-package-versions@v1
+        with:
+          package-name: 'telus.capsa.capsa-core'
+          num-old-versions-to-delete: 1
