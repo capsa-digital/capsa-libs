@@ -7,4 +7,9 @@ jobs:
       - uses: actions/delete-package-versions@v1
         with:
           package-name: 'telus.capsa.capsa-it'
-          num-old-versions-to-delete: 1
+          num-old-versions-to-delete: 28
+
+      - uses: actions/delete-package-versions@v1
+        with:
+          package-name: 'telus.capsa.capsa-core'
+          num-old-versions-to-delete: 28
