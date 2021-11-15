@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test
 class JsonPathModifierTest {
 
     @Test
-    @Suppress("FunctionNaming")
     fun `Modifier - Happy path`() {
         assertEquals(
             """[{"id":"12345","data":"qwert","num":12345},{"id":"23456","data":"asdfg","num":23456}]""",
@@ -32,7 +31,6 @@ class JsonPathModifierTest {
     }
 
     @Test
-    @Suppress("FunctionNaming")
     fun `Modifier - date`() {
         assertEquals(
             """[{"id":"12345","endDate":[2019,7,30,23,59]}]""",

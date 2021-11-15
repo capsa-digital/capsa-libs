@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test
 class JsonPathValidatorTest {
 
     @Test
-    @Suppress("FunctionNaming")
     fun `Validator - Happy path`() {
         given {
             """
@@ -38,7 +37,6 @@ class JsonPathValidatorTest {
     }
 
     @Test
-    @Suppress("FunctionNaming")
     fun `Validator - empty`() {
         JsonPathValidator.assertJson("""
             []
@@ -48,7 +46,6 @@ class JsonPathValidatorTest {
     }
 
     @Test
-    @Suppress("FunctionNaming")
     fun `Validator - empty negative`() {
         var exception: AssertionError? = null
         try {
@@ -69,7 +66,6 @@ class JsonPathValidatorTest {
     }
 
     @Test
-    @Suppress("FunctionNaming")
     fun `Validator - regex positive`() {
         JsonPathValidator.assertJson("""
             {
@@ -81,7 +77,6 @@ class JsonPathValidatorTest {
     }
 
     @Test
-    @Suppress("FunctionNaming")
     fun `Validator - like positive`() {
         JsonPathValidator.assertJson("""
             {

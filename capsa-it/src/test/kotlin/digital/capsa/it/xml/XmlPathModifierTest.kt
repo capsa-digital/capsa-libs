@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test
 class XmlPathModifierTest {
 
     @Test
-    @Suppress("FunctionNaming")
     fun `Modifier - Happy path`() {
         assertEquals(
             removeWhiteSpaces(

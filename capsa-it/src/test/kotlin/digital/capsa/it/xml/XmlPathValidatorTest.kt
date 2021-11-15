@@ -14,7 +14,6 @@ import org.junit.jupiter.api.Test
 class XmlPathValidatorTest {
 
     @Test
-    @Suppress("FunctionNaming")
     fun `Validator - Happy path`() {
         given {
             """
@@ -46,7 +45,6 @@ class XmlPathValidatorTest {
     }
 
     @Test
-    @Suppress("FunctionNaming")
     fun `Validator - equal negative`() {
         given {
             """
@@ -76,7 +74,6 @@ class XmlPathValidatorTest {
     }
 
     @Test
-    @Suppress("FunctionNaming")
     fun `Validator - like negative`() {
         given {
             """
@@ -106,7 +103,6 @@ class XmlPathValidatorTest {
     }
 
     @Test
-    @Suppress("FunctionNaming")
     fun `Validator - regex negative`() {
         given {
             """
@@ -136,7 +132,6 @@ class XmlPathValidatorTest {
     }
 
     @Test
-    @Suppress("FunctionNaming")
     fun `Validator - invalid path`() {
         given {
             """
