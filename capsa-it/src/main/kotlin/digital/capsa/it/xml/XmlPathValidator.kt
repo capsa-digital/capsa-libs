@@ -42,7 +42,9 @@ object XmlPathValidator {
             } catch (e: Exception) {
                 throw Error("Path not found, document: $document, path: ${rule.path}", e)
             }
-            if (nodes.length > 1) {
+            if (nodes.length <= 0) {
+                throw Error("Path not found, document: $document, path: ${rule.path}")
+            } else if (nodes.length > 1) {
                 if (rule.op != OpType.equal) {
                     throw Error("'${rule.op}' op is not supported for XML array result. Use 'equal' op")
                 }

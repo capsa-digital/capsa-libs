@@ -134,4 +134,34 @@ class XmlPathValidatorTest {
             assertThat(ex.message).isEqualTo("expected [XML path //element[id='12345']/data validation failed, document: [#document: null]] to match:</.*ab cd.*/> but was:<\"test1! abcd !1test\">")
         }
     }
+
+    @Test
+    @Suppress("FunctionNaming")
+    fun testValidator_invalid_path() {
+        given {
+            """
+            <?xml version="1.0" encoding="UTF-8"?>
+            <root>
+               <element>
+                  <data>abcd</data>
+                  <id>12345</id>
+               </element>
+               <element>
+                  <data>bcde</data>
+                  <id>23456</id>
+               </element>
+            </root>
+            """.trimIndent()
+        }.onError {
+            XmlPathValidator.assertXml(
+                it,
+                listOf(
+                    ValidationRule("//invalid/data", OpType.equal, listOf("abcd", "bcde"))
+                )
+            )
+        }.then { ex ->
+            assertThat(ex).isInstanceOf(Error::class)
+            assertThat(ex.message).isEqualTo("Path not found, document: [#document: null], path: //invalid/data")
+        }
+    }
 }
