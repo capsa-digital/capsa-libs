@@ -15,7 +15,7 @@ class XmlPathValidatorTest {
 
     @Test
     @Suppress("FunctionNaming")
-    fun testValidator_happyPath() {
+    fun `Validator - Happy path`() {
         given {
             """
             <?xml version="1.0" encoding="UTF-8"?>
@@ -47,7 +47,7 @@ class XmlPathValidatorTest {
 
     @Test
     @Suppress("FunctionNaming")
-    fun testValidator_equal_negative() {
+    fun `Validator - equal negative`() {
         given {
             """
             <?xml version="1.0" encoding="UTF-8"?>
@@ -77,7 +77,7 @@ class XmlPathValidatorTest {
 
     @Test
     @Suppress("FunctionNaming")
-    fun testValidator_like_negative() {
+    fun `Validator - like negative`() {
         given {
             """
             <?xml version="1.0" encoding="UTF-8"?>
@@ -107,7 +107,7 @@ class XmlPathValidatorTest {
 
     @Test
     @Suppress("FunctionNaming")
-    fun testValidator_regex_negative() {
+    fun `Validator - regex negative`() {
         given {
             """
             <?xml version="1.0" encoding="UTF-8"?>
@@ -137,7 +137,7 @@ class XmlPathValidatorTest {
 
     @Test
     @Suppress("FunctionNaming")
-    fun testValidator_invalid_path() {
+    fun `Validator - invalid path`() {
         given {
             """
             <?xml version="1.0" encoding="UTF-8"?>

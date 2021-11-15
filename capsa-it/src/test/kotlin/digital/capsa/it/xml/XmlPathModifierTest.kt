@@ -9,7 +9,7 @@ class XmlPathModifierTest {
 
     @Test
     @Suppress("FunctionNaming")
-    fun testModifier_happyPath() {
+    fun `Modifier - Happy path`() {
         assertEquals(
             removeWhiteSpaces(
                 """

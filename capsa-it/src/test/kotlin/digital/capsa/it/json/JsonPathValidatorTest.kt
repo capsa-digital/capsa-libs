@@ -13,7 +13,7 @@ class JsonPathValidatorTest {
 
     @Test
     @Suppress("FunctionNaming")
-    fun testValidator_happyPath() {
+    fun `Validator - Happy path`() {
         given {
             """
                 [{
@@ -39,7 +39,7 @@ class JsonPathValidatorTest {
 
     @Test
     @Suppress("FunctionNaming")
-    fun testValidator_empty() {
+    fun `Validator - empty`() {
         JsonPathValidator.assertJson("""
             []
         """.trimIndent(), listOf(
@@ -49,7 +49,7 @@ class JsonPathValidatorTest {
 
     @Test
     @Suppress("FunctionNaming")
-    fun testValidator_empty_negative() {
+    fun `Validator - empty negative`() {
         var exception: AssertionError? = null
         try {
             JsonPathValidator.assertJson("""
@@ -70,7 +70,7 @@ class JsonPathValidatorTest {
 
     @Test
     @Suppress("FunctionNaming")
-    fun testValidator_regex() {
+    fun `Validator - regex positive`() {
         JsonPathValidator.assertJson("""
             {
               "id": "12345"
@@ -82,7 +82,7 @@ class JsonPathValidatorTest {
 
     @Test
     @Suppress("FunctionNaming")
-    fun testValidator_like() {
+    fun `Validator - like positive`() {
         JsonPathValidator.assertJson("""
             {
               "cause": "Cannot deserialize value of type `java.util.UUID` from String \"a2f674455-e5f4-4946-a19a-xdace6e1a598\": UUID has to be represented by standard 36-char representation\n at [Source: (String)\"{\"region\":\"qc\",\"listOfId\":[\"a2f674455-e5f4-4946-a19a-xdace6e1a598\"]}\"; line: 1, column: 28]"
