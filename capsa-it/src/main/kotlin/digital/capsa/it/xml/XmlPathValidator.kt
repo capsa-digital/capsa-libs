@@ -44,7 +44,7 @@ object XmlPathValidator {
             }
             if (nodes.length > 1) {
                 if (rule.op != OpType.equal) {
-                    throw Error("'${rule.op}' op is not supported for JSONArray result. Use 'equal' op")
+                    throw Error("'${rule.op}' op is not supported for XML array result. Use 'equal' op")
                 }
                 val valueSet = mutableSetOf<String>()
                 for (i in 0 until nodes.length) {
@@ -53,7 +53,7 @@ object XmlPathValidator {
                 assertEquals(
                     valueList.toSet(),
                     valueSet,
-                    "json path ${rule.path} validation failed, document: $document"
+                    "XML path ${rule.path} validation failed, document: $document"
                 )
             } else {
                 val value = nodes.item(0).textContent
@@ -61,18 +61,18 @@ object XmlPathValidator {
                     OpType.regex ->
                         assertThat(
                             value,
-                            "json path ${rule.path} validation failed, document: $document"
+                            "XML path ${rule.path} validation failed, document: $document"
                         ).matches(Regex(valueList[0].toString()))
                     OpType.equal ->
                         assertEquals(
                             valueList[0],
                             value,
-                            "json path ${rule.path} validation failed, document: $document"
+                            "XML path ${rule.path} validation failed, document: $document"
                         )
                     OpType.like ->
                         assertThat(
                             value,
-                            "json path ${rule.path} validation failed, document: $document"
+                            "XML path ${rule.path} validation failed, document: $document"
                         ).matches(Regex(".*${valueList[0]}.*", RegexOption.DOT_MATCHES_ALL))
                 }
             }
