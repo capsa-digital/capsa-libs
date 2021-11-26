@@ -70,6 +70,15 @@ subprojects {
             dependency("com.sun.xml.bind:jaxb-core:${CoreVersion.JAXB_IMPL}")
             dependency("com.sun.xml.bind:jaxb-impl:${CoreVersion.JAXB_IMPL}")
             dependency("javax.xml.bind:jaxb-api:${CoreVersion.JAXB_API}")
+            dependency("org.apache.jmeter:ApacheJMeter_core:${CoreVersion.JMETER}") {
+                exclude("org.apache.logging.log4j:log4j-slf4j-impl")
+            }
+            dependency("org.apache.jmeter:ApacheJMeter_http:${CoreVersion.JMETER}") {
+                exclude("org.apache.logging.log4j:log4j-slf4j-impl")
+            }
+            dependency("kg.apc:jmeter-plugins-casutg:${CoreVersion.JMETER_JPGC_CASUTG}") {
+                exclude("org.apache.logging.log4j:log4j-slf4j-impl")
+            }
         }
     }
 

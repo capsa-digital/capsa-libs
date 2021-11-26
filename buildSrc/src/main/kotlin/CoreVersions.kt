@@ -6,6 +6,8 @@ object CoreVersion {
     const val JAVA_HAMCREST = "2.0.0.0"
     const val JAXB_API = "2.3.1"
     const val JAXB_IMPL = "3.0.0"
+    const val JMETER = "5.0"
+    const val JMETER_JPGC_CASUTG = "2.6"
     const val LOGBACK_CONTRIB = "0.1.5"
     const val OPENAPI = "1.5.8"
     const val REACTOR_BOM = "Californium-RELEASE"
