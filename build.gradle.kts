@@ -72,9 +72,11 @@ subprojects {
             dependency("javax.xml.bind:jaxb-api:${CoreVersion.JAXB_API}")
             dependency("org.apache.jmeter:ApacheJMeter_core:${CoreVersion.JMETER}") {
                 exclude("org.apache.logging.log4j:log4j-slf4j-impl")
+                exclude("org.apache.jmeter:bom")
             }
             dependency("org.apache.jmeter:ApacheJMeter_http:${CoreVersion.JMETER}") {
                 exclude("org.apache.logging.log4j:log4j-slf4j-impl")
+                exclude("org.apache.jmeter:bom")
             }
             dependency("kg.apc:jmeter-plugins-casutg:${CoreVersion.JMETER_JPGC_CASUTG}") {
                 exclude("org.apache.logging.log4j:log4j-slf4j-impl")
