@@ -47,6 +47,7 @@ internal class PerfServiceTest {
                 )
             )
         }.then { report ->
+            println(report.summary)
             assertThat(report.totalCallCount).isGreaterThan(100)
             assertThat(
                 java.net.URL("http://localhost:$port/getCallCount").readText().toLong()
@@ -78,6 +79,7 @@ internal class PerfServiceTest {
                 )
             )
         }.then { report ->
+            println(report.summary)
             assertThat(report.totalCallCount).isGreaterThan(100)
             assertThat(
                 java.net.URL("http://localhost:$port/getCallCount").readText().toLong()
@@ -109,6 +111,7 @@ internal class PerfServiceTest {
                 )
             )
         }.then { report ->
+            println(report.summary)
             assertThat(report.totalCallCount).isGreaterThan(100)
             assertThat(
                 java.net.URL("http://localhost:$port/getCallCount").readText().toLong()
