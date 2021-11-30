@@ -2,6 +2,8 @@ package digital.capsa.perfrunner
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @SpringBootApplication
@@ -20,6 +22,15 @@ class MainController {
     fun getRequest(): String {
         callCount++
         return "Hello world"
+    }
+
+    @GetMapping("/testGetWithErrors")
+    fun getRequestWithErrors(): ResponseEntity<String> {
+        callCount++
+        if (callCount == 3L || callCount == 7L) {
+            return ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+        return ResponseEntity("Hello world", HttpStatus.OK)
     }
 
     @PostMapping("/testPost")
