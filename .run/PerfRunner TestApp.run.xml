@@ -1,0 +1,11 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="PerfRunner TestApp" type="JetRunConfigurationType">
+    <option name="MAIN_CLASS_NAME" value="digital.capsa.perfrunner.PerfRunnerTestAppKt" />
+    <module name="capsa-telus-libs.capsa-perfrunner.test" />
+    <shortenClasspath name="NONE" />
+    <option name="VM_PARAMETERS" value="-Dserver.port=8081" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
