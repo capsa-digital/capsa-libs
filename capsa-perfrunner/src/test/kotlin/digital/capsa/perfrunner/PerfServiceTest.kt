@@ -8,13 +8,20 @@ import digital.capsa.perfrunner.domain.ExecutionGroup
 import digital.capsa.perfrunner.domain.HttpRequest
 import digital.capsa.perfrunner.domain.Plan
 import digital.capsa.perfrunner.domain.URL
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.web.server.LocalServerPort
 
-@Disabled //TODO Only runs locally due to PerfRunnerTestApp that needs to be running
+@SpringBootTest(
+    classes = [PerfRunnerTestApp::class],
+    webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
+)
 @Tag("unit")
 internal class PerfServiceTest {
+
+    @LocalServerPort
+    lateinit var port: String
 
     @Test
     fun `executePlan Happy path`() {
@@ -25,7 +32,12 @@ internal class PerfServiceTest {
                 Plan(
                     "test", ExecutionGroup(
                         "GroupName",
-                        HttpRequest(URL("http", "localhost", 8081, "/test", ""), HttpRequest.Method.GET, null, ""),
+                        HttpRequest(
+                            URL("http", "localhost", port.toInt(), "/test", ""),
+                            HttpRequest.Method.GET,
+                            null,
+                            ""
+                        ),
                         "1",
                         "0",
                         "0",
@@ -37,7 +49,7 @@ internal class PerfServiceTest {
         }.then { report ->
             assertThat(report.totalCallCount).isGreaterThan(100)
             assertThat(
-                java.net.URL("http://localhost:8081/getCallCount").readText().toLong()
+                java.net.URL("http://localhost:$port/getCallCount").readText().toLong()
             ).isEqualTo(report.totalCallCount)
         }
     }
