@@ -22,12 +22,11 @@ object JMeterRunner {
 
     @Throws(Exception::class)
     fun exec(execPlan: ExecutionPlan): JMeterSummariser {
-        val jmeterHome = System.getProperty("jmeter.home") ?: throw JMeterException("jmeter.home property is not set")
-
         val jmeter = StandardJMeterEngine()
+        val jmeterHome = "src/main/resources/jmeter-home"
+
         JMeterUtils.setJMeterHome(jmeterHome)
         JMeterUtils.loadJMeterProperties("$jmeterHome/jmeter.properties")
-        SaveService.loadProperties()
 
         val rootTree = ListedHashTree()
 
