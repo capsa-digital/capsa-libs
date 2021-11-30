@@ -52,7 +52,7 @@ open class JMeterSummariser : Summariser() {
 
     fun getErrorCount(): Long = total.errorCount
 
-    fun printSummary(): String {
+    fun getSummary(): String {
         val sb = StringBuilder()
         sb.append("Number of Requests raised=").append(total.count).append('\n')
         sb.append("Total Elapsed Time (ms)=").append(total.elapsed).append('\n')
