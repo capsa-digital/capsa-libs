@@ -84,4 +84,36 @@ internal class PerfServiceTest {
             ).isEqualTo(report.totalCallCount)
         }
     }
+
+    @Test
+    fun `executePlan - negative - two failures`() {
+        given {
+            PerfService()
+        }.on { perfService ->
+            perfService.executePlan().apply(
+                Plan(
+                    "test", ExecutionGroup(
+                        "GroupName",
+                        HttpRequest(
+                            URL("http", "localhost", port.toInt(), "/testGetWithErrors", ""),
+                            HttpRequest.Method.GET,
+                            null,
+                            ""
+                        ),
+                        "1",
+                        "0",
+                        "0",
+                        "1",
+                        "200"
+                    )
+                )
+            )
+        }.then { report ->
+            assertThat(report.totalCallCount).isGreaterThan(100)
+            assertThat(
+                java.net.URL("http://localhost:$port/getCallCount").readText().toLong()
+            ).isEqualTo(report.totalCallCount)
+            assertThat(report.totalErrorCount).isEqualTo(2)
+        }
+    }
 }

@@ -28,7 +28,11 @@ open class PerfService {
             )
             execPlan.addExecutionGroup(group)
             val jMeterSummariser: JMeterSummariser = JMeterRunner.exec(execPlan)
-            return@Function Report(jMeterSummariser.printSummary(), jMeterSummariser.getNumSamples())
+            return@Function Report(
+                jMeterSummariser.printSummary(),
+                jMeterSummariser.getNumSamples(),
+                jMeterSummariser.getErrorCount()
+            )
         }
     }
 
