@@ -4,16 +4,14 @@ import digital.capsa.perfrunner.domain.ExecutionGroup
 import digital.capsa.perfrunner.domain.ExecutionPlan
 import digital.capsa.perfrunner.domain.Plan
 import digital.capsa.perfrunner.domain.Report
-import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Configuration
+import org.springframework.stereotype.Service
 import java.util.function.Function
 
-@Configuration
+@Service
 open class PerformanceService {
 
     @Bean
-    @Qualifier("executePlan")
     open fun executePlan(): Function<Plan, Report> {
         return Function { plan ->
             val execPlan = ExecutionPlan("Plan1")

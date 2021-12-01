@@ -20,7 +20,6 @@ import org.apache.jorphan.collections.ListedHashTree
 
 object JMeterRunner {
 
-    @Throws(Exception::class)
     fun exec(execPlan: ExecutionPlan): JMeterSummariser {
         val jmeter = StandardJMeterEngine()
         val jmeterHome = "src/main/resources/jmeter-home"
@@ -58,7 +57,7 @@ object JMeterRunner {
             val httpSampler = HTTPSamplerProxy()
             httpSampler.domain = httpRequest.url.host
             if (httpRequest.url.port != null) {
-                httpSampler.port = httpRequest.url.port!!
+                httpSampler.port = httpRequest.url.port
             }
             httpSampler.path = httpRequest.url.path + "?" + httpRequest.url.query
             httpSampler.protocol = httpRequest.url.scheme

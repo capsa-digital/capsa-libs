@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.*
 import java.util.concurrent.atomic.AtomicLong
 
 @SpringBootApplication
-open class PerfRunnerTestApp
+open class PerformanceRunnerTestApp
 
 fun main(args: Array<String>) {
-    runApplication<PerfRunnerTestApp>(*args)
+    runApplication<PerformanceRunnerTestApp>(*args)
 }
 
 @RestController
