@@ -26,97 +26,91 @@ internal class PerfServiceTest {
     @Test
     fun `executePlan - Happy path - GET`() {
         given {
-            PerfService()
-        }.on { perfService ->
-            perfService.executePlan().apply(
-                Plan(
-                    "test", ExecutionGroup(
-                        "GroupName",
-                        HttpRequest(
-                            URL("http", "localhost", port.toInt(), "/testGet", ""),
-                            HttpRequest.Method.GET,
-                            null,
-                            ""
-                        ),
-                        "1",
-                        "0",
-                        "0",
-                        "1",
-                        "200"
-                    )
+            Plan(
+                "PlanName",
+                ExecutionGroup(
+                    "GroupName",
+                    HttpRequest(
+                        URL("http", "localhost", port.toInt(), "/testGet", ""),
+                        HttpRequest.Method.GET,
+                        null,
+                        ""
+                    ),
+                    "1",
+                    "0",
+                    "0",
+                    "1",
+                    "200"
                 )
             )
+        }.on { plan ->
+            PerfService().executePlan().apply(plan)
         }.then { report ->
-            println(report.summary)
             assertThat(report.totalCallCount).isGreaterThan(100)
-            assertThat(
-                java.net.URL("http://localhost:$port/getCallCount").readText().toLong()
-            ).isEqualTo(report.totalCallCount)
+            assertThat(report.totalCallCount)
+                .isEqualTo(java.net.URL("http://localhost:$port/getCallCount").readText().toLong())
+            println(report.summary)
         }
     }
 
     @Test
     fun `executePlan - Happy path - POST`() {
         given {
-            PerfService()
-        }.on { perfService ->
-            perfService.executePlan().apply(
-                Plan(
-                    "test", ExecutionGroup(
-                        "GroupName",
-                        HttpRequest(
-                            URL("http", "localhost", port.toInt(), "/testPost", ""),
-                            HttpRequest.Method.POST,
-                            mapOf("my-header-value" to "Hello header"),
-                            "Hello body"
-                        ),
-                        "1",
-                        "0",
-                        "0",
-                        "1",
-                        "200"
-                    )
+            Plan(
+                "PlanName",
+                ExecutionGroup(
+                    "GroupName",
+                    HttpRequest(
+                        URL("http", "localhost", port.toInt(), "/testPost", ""),
+                        HttpRequest.Method.POST,
+                        mapOf("my-header-value" to "Hello header"),
+                        "Hello body"
+                    ),
+                    "1",
+                    "0",
+                    "0",
+                    "1",
+                    "200"
                 )
             )
+        }.on { plan ->
+            PerfService().executePlan().apply(plan)
         }.then { report ->
-            println(report.summary)
             assertThat(report.totalCallCount).isGreaterThan(100)
-            assertThat(
-                java.net.URL("http://localhost:$port/getCallCount").readText().toLong()
-            ).isEqualTo(report.totalCallCount)
+            assertThat(report.totalCallCount)
+                .isEqualTo(java.net.URL("http://localhost:$port/getCallCount").readText().toLong())
+            println(report.summary)
         }
     }
 
     @Test
     fun `executePlan - negative - two failures`() {
         given {
-            PerfService()
-        }.on { perfService ->
-            perfService.executePlan().apply(
-                Plan(
-                    "test", ExecutionGroup(
-                        "GroupName",
-                        HttpRequest(
-                            URL("http", "localhost", port.toInt(), "/testGetWithErrors", ""),
-                            HttpRequest.Method.GET,
-                            null,
-                            ""
-                        ),
-                        "1",
-                        "0",
-                        "0",
-                        "1",
-                        "200"
-                    )
+            Plan(
+                "PlanName",
+                ExecutionGroup(
+                    "GroupName",
+                    HttpRequest(
+                        URL("http", "localhost", port.toInt(), "/testGetWithErrors", ""),
+                        HttpRequest.Method.GET,
+                        null,
+                        ""
+                    ),
+                    "1",
+                    "0",
+                    "0",
+                    "1",
+                    "200"
                 )
             )
+        }.on { plan ->
+            PerfService().executePlan().apply(plan)
         }.then { report ->
-            println(report.summary)
             assertThat(report.totalCallCount).isGreaterThan(100)
-            assertThat(
-                java.net.URL("http://localhost:$port/getCallCount").readText().toLong()
-            ).isEqualTo(report.totalCallCount)
+            assertThat(report.totalCallCount)
+                .isEqualTo(java.net.URL("http://localhost:$port/getCallCount").readText().toLong())
             assertThat(report.totalErrorCount).isEqualTo(2)
+            println(report.summary)
         }
     }
 }
