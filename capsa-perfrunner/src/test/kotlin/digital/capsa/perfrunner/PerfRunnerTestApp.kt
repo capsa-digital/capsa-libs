@@ -5,6 +5,7 @@ import org.springframework.boot.runApplication
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import java.util.concurrent.atomic.AtomicLong
 
 @SpringBootApplication
 open class PerfRunnerTestApp
@@ -16,18 +17,17 @@ fun main(args: Array<String>) {
 @RestController
 class MainController {
 
-    var callCount: Long = 0L
+    private val callCount = AtomicLong(0)
 
     @GetMapping("/testGet")
     fun getRequest(): String {
-        callCount++
-        return "Hello world"
+        return "Count: ${callCount.getAndIncrement()}"
     }
 
     @GetMapping("/testGetWithErrors")
     fun getRequestWithErrors(): ResponseEntity<String> {
-        callCount++
-        if (callCount == 3L || callCount == 7L) {
+        callCount.incrementAndGet()
+        if (callCount.get() == 3L || callCount.get() == 7L) {
             return ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
         }
         return ResponseEntity("Hello world", HttpStatus.OK)
@@ -36,7 +36,7 @@ class MainController {
     @PostMapping("/testPost")
     fun postRequest(@RequestHeader("my-header-value") headerContent: String, @RequestBody body: String): String {
         if (headerContent == "Hello header" && body == "Hello body") {
-            callCount++
+            callCount.incrementAndGet()
         }
         return "Hello universe"
     }
@@ -44,7 +44,7 @@ class MainController {
     @GetMapping("/getCallCount")
     fun getCallCount(): String {
         val returnValue = callCount.toString()
-        callCount = 0
+        callCount.set(0)
         return returnValue
     }
 }
