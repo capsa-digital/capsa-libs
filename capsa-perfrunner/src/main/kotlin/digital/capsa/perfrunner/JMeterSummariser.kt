@@ -34,7 +34,7 @@ open class JMeterSummariser : Summariser() {
 
     fun getNumSamples(): Long = total.count
 
-    fun getAverage(): Long = total.elapsed / total.count
+    private fun getAverage(): Long = total.elapsed / total.count
 
     fun getMedian(): Long = total.median.toLong()
 

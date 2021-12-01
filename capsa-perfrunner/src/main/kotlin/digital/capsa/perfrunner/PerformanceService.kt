@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration
 import java.util.function.Function
 
 @Configuration
-open class PerfService {
+open class PerformanceService {
 
     @Bean
     @Qualifier("executePlan")

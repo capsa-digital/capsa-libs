@@ -18,7 +18,7 @@ import org.springframework.boot.web.server.LocalServerPort
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
 @Tag("unit")
-internal class PerfServiceTest {
+internal class PerformanceServiceTest {
 
     @LocalServerPort
     lateinit var port: String
@@ -36,7 +36,7 @@ internal class PerfServiceTest {
                         null,
                         ""
                     ),
-                    "1",
+                    "3",
                     "0",
                     "0",
                     "1",
@@ -44,7 +44,7 @@ internal class PerfServiceTest {
                 )
             )
         }.on { plan ->
-            PerfService().executePlan().apply(plan)
+            PerformanceService().executePlan().apply(plan)
         }.then { report ->
             assertThat(report.totalCallCount).isGreaterThan(100)
             assertThat(report.totalCallCount)
@@ -74,7 +74,7 @@ internal class PerfServiceTest {
                 )
             )
         }.on { plan ->
-            PerfService().executePlan().apply(plan)
+            PerformanceService().executePlan().apply(plan)
         }.then { report ->
             assertThat(report.totalCallCount).isGreaterThan(100)
             assertThat(report.totalCallCount)
@@ -104,7 +104,7 @@ internal class PerfServiceTest {
                 )
             )
         }.on { plan ->
-            PerfService().executePlan().apply(plan)
+            PerformanceService().executePlan().apply(plan)
         }.then { report ->
             assertThat(report.totalCallCount).isGreaterThan(100)
             assertThat(report.totalCallCount)
