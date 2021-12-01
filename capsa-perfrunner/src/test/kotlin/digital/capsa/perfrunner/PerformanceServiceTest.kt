@@ -5,11 +5,12 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isGreaterThan
 import digital.capsa.it.gherkin.given
 import digital.capsa.perfrunner.domain.ExecutionGroup
+import digital.capsa.perfrunner.domain.ExecutionPlan
 import digital.capsa.perfrunner.domain.HttpRequest
-import digital.capsa.perfrunner.domain.Plan
 import digital.capsa.perfrunner.domain.URL
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.web.server.LocalServerPort
 
@@ -23,28 +24,33 @@ internal class PerformanceServiceTest {
     @LocalServerPort
     lateinit var port: String
 
+    @Autowired
+    lateinit var performanceService: PerformanceService
+
     @Test
     fun `executePlan - Happy path - GET`() {
         given {
-            Plan(
+            ExecutionPlan(
                 "PlanName",
-                ExecutionGroup(
-                    "GroupName",
-                    HttpRequest(
-                        URL("http", "localhost", port.toInt(), "/testGet", ""),
-                        HttpRequest.Method.GET,
-                        null,
-                        ""
-                    ),
-                    "3",
-                    "0",
-                    "0",
-                    "1",
-                    "200"
+                setOf(
+                    ExecutionGroup(
+                        "GroupName1",
+                        HttpRequest(
+                            URL("http", "localhost", port.toInt(), "/testGet", ""),
+                            HttpRequest.Method.GET,
+                            null,
+                            ""
+                        ),
+                        "3",
+                        "0",
+                        "0",
+                        "1",
+                        "200"
+                    )
                 )
             )
         }.on { plan ->
-            PerformanceService().executePlan().apply(plan)
+            performanceService.executePlan().apply(plan)
         }.then { report ->
             assertThat(report.totalCallCount).isGreaterThan(100)
             assertThat(report.totalCallCount)
@@ -56,25 +62,27 @@ internal class PerformanceServiceTest {
     @Test
     fun `executePlan - Happy path - POST`() {
         given {
-            Plan(
+            ExecutionPlan(
                 "PlanName",
-                ExecutionGroup(
-                    "GroupName",
-                    HttpRequest(
-                        URL("http", "localhost", port.toInt(), "/testPost", ""),
-                        HttpRequest.Method.POST,
-                        mapOf("my-header-value" to "Hello header"),
-                        "Hello body"
-                    ),
-                    "1",
-                    "0",
-                    "0",
-                    "1",
-                    "200"
+                setOf(
+                    ExecutionGroup(
+                        "GroupName",
+                        HttpRequest(
+                            URL("http", "localhost", port.toInt(), "/testPost", ""),
+                            HttpRequest.Method.POST,
+                            mapOf("my-header-value" to "Hello header"),
+                            "Hello body"
+                        ),
+                        "1",
+                        "0",
+                        "0",
+                        "1",
+                        "200"
+                    )
                 )
             )
         }.on { plan ->
-            PerformanceService().executePlan().apply(plan)
+            performanceService.executePlan().apply(plan)
         }.then { report ->
             assertThat(report.totalCallCount).isGreaterThan(100)
             assertThat(report.totalCallCount)
@@ -86,25 +94,27 @@ internal class PerformanceServiceTest {
     @Test
     fun `executePlan - negative - two failures`() {
         given {
-            Plan(
+            ExecutionPlan(
                 "PlanName",
-                ExecutionGroup(
-                    "GroupName",
-                    HttpRequest(
-                        URL("http", "localhost", port.toInt(), "/testGetWithErrors", ""),
-                        HttpRequest.Method.GET,
-                        null,
-                        ""
-                    ),
-                    "1",
-                    "0",
-                    "0",
-                    "1",
-                    "200"
+                setOf(
+                    ExecutionGroup(
+                        "GroupName",
+                        HttpRequest(
+                            URL("http", "localhost", port.toInt(), "/testGetWithErrors", ""),
+                            HttpRequest.Method.GET,
+                            null,
+                            ""
+                        ),
+                        "1",
+                        "0",
+                        "0",
+                        "1",
+                        "200"
+                    )
                 )
             )
         }.on { plan ->
-            PerformanceService().executePlan().apply(plan)
+            performanceService.executePlan().apply(plan)
         }.then { report ->
             assertThat(report.totalCallCount).isGreaterThan(100)
             assertThat(report.totalCallCount)

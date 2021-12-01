@@ -12,7 +12,6 @@ import org.apache.jmeter.protocol.http.gui.HeaderPanel
 import org.apache.jmeter.protocol.http.sampler.HTTPSamplerProxy
 import org.apache.jmeter.protocol.http.util.HTTPArgument
 import org.apache.jmeter.reporters.ResultCollector
-import org.apache.jmeter.save.SaveService
 import org.apache.jmeter.testelement.TestElement
 import org.apache.jmeter.testelement.TestPlan
 import org.apache.jmeter.util.JMeterUtils
@@ -22,7 +21,7 @@ object JMeterRunner {
 
     fun exec(execPlan: ExecutionPlan): JMeterSummariser {
         val jmeter = StandardJMeterEngine()
-        val jmeterHome = "src/main/resources/jmeter-home"
+        val jmeterHome = this::class.java.classLoader.getResource("jmeter-home")!!.path
 
         JMeterUtils.setJMeterHome(jmeterHome)
         JMeterUtils.loadJMeterProperties("$jmeterHome/jmeter.properties")
@@ -33,7 +32,7 @@ object JMeterRunner {
         val testPlanTree = rootTree.add(testPlan)
 
         for ((name, httpRequest, targetConcurrency, rampUpTime, rampUpStepCount, holdTargetRateTime,
-            assertionResponseCode) in execPlan.executionGroup) {
+            assertionResponseCode) in execPlan.groups) {
 
             val threadGroup = ConcurrencyThreadGroup()
             threadGroup.name = name
@@ -56,9 +55,7 @@ object JMeterRunner {
 
             val httpSampler = HTTPSamplerProxy()
             httpSampler.domain = httpRequest.url.host
-            if (httpRequest.url.port != null) {
-                httpSampler.port = httpRequest.url.port
-            }
+            httpRequest.url.port?.let { httpSampler.port = httpRequest.url.port }
             httpSampler.path = httpRequest.url.path + "?" + httpRequest.url.query
             httpSampler.protocol = httpRequest.url.scheme
             httpSampler.method = httpRequest.method.name
