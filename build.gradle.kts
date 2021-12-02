@@ -21,11 +21,6 @@ subprojects {
 
     group = "telus.capsa"
 
-    java {
-        withJavadocJar()
-        withSourcesJar()
-    }
-
     tasks.withType<Detekt> {
         failFast = false
         jvmTarget = "11"
@@ -61,9 +56,9 @@ subprojects {
             dependency("com.willowtreeapps.assertk:assertk-jvm:${CoreVersion.ASSERTK_JVM}")
             dependency("org.hamcrest:java-hamcrest:${CoreVersion.JAVA_HAMCREST}")
             dependency("com.github.tomakehurst:wiremock-jre8:${CoreVersion.WIREMOCK_JRE8}")
-            dependency("org.seleniumhq.selenium:selenium-java:${CoreVersion.SELENIUM}")
-            dependency("org.seleniumhq.selenium:selenium-chrome-driver:${CoreVersion.SELENIUM}")
-            dependency("org.seleniumhq.selenium:selenium-firefox-driver:${CoreVersion.SELENIUM}")
+            dependency("org.seleniumhq.selenium:selenium-java:${CoreVersion.SELENIUM}") // TODO delete
+            dependency("org.seleniumhq.selenium:selenium-chrome-driver:${CoreVersion.SELENIUM}") // TODO delete
+            dependency("org.seleniumhq.selenium:selenium-firefox-driver:${CoreVersion.SELENIUM}") // TODO delete
             dependency("com.google.guava:guava:${CoreVersion.GUAVA}")
             dependency("org.springdoc:springdoc-openapi-ui:${CoreVersion.OPENAPI}")
             dependency("com.sun.xml.bind:jaxb-core:${CoreVersion.JAXB_IMPL}")
