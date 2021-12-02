@@ -1,3 +1,5 @@
+import org.springframework.boot.gradle.tasks.bundling.BootJar
+
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-compiler-embeddable")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
@@ -17,4 +19,8 @@ dependencies {
     implementation("kg.apc:jmeter-plugins-casutg")
     implementation(project(":capsa-it"))
     implementation("com.willowtreeapps.assertk:assertk-jvm")
+}
+
+tasks.getByName<BootJar>("bootJar") {
+    enabled = true
 }

@@ -4,8 +4,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-open class PerformanceRunner
+open class Main
 
 fun main(vararg args: String) {
-    runApplication<PerformanceRunner>(*args)
+    runApplication<Main>(*args)
 }
