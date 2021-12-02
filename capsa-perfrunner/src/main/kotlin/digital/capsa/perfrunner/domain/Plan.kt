@@ -1,6 +1,6 @@
 package digital.capsa.perfrunner.domain
 
-data class ExecutionPlan(
+data class Plan(
     val name: String,
     val groups: Set<ExecutionGroup>
 )

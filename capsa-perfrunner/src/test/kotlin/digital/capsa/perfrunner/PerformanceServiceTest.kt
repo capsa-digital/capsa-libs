@@ -5,7 +5,7 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isGreaterThan
 import digital.capsa.it.gherkin.given
 import digital.capsa.perfrunner.domain.ExecutionGroup
-import digital.capsa.perfrunner.domain.ExecutionPlan
+import digital.capsa.perfrunner.domain.Plan
 import digital.capsa.perfrunner.domain.HttpRequest
 import digital.capsa.perfrunner.domain.URL
 import org.junit.jupiter.api.Tag
@@ -30,7 +30,7 @@ internal class PerformanceServiceTest {
     @Test
     fun `executePlan - Happy path - GET`() {
         given {
-            ExecutionPlan(
+            Plan(
                 "PlanName",
                 setOf(
                     ExecutionGroup(
@@ -50,7 +50,7 @@ internal class PerformanceServiceTest {
                 )
             )
         }.on { plan ->
-            performanceService.executePlan().apply(plan)
+            performanceService.executePlan().invoke(plan)
         }.then { report ->
             assertThat(report.totalCallCount).isGreaterThan(100)
             assertThat(report.totalCallCount)
@@ -62,7 +62,7 @@ internal class PerformanceServiceTest {
     @Test
     fun `executePlan - Happy path - POST`() {
         given {
-            ExecutionPlan(
+            Plan(
                 "PlanName",
                 setOf(
                     ExecutionGroup(
@@ -82,7 +82,7 @@ internal class PerformanceServiceTest {
                 )
             )
         }.on { plan ->
-            performanceService.executePlan().apply(plan)
+            performanceService.executePlan().invoke(plan)
         }.then { report ->
             assertThat(report.totalCallCount).isGreaterThan(100)
             assertThat(report.totalCallCount)
@@ -94,7 +94,7 @@ internal class PerformanceServiceTest {
     @Test
     fun `executePlan - negative - two failures`() {
         given {
-            ExecutionPlan(
+            Plan(
                 "PlanName",
                 setOf(
                     ExecutionGroup(
@@ -114,7 +114,7 @@ internal class PerformanceServiceTest {
                 )
             )
         }.on { plan ->
-            performanceService.executePlan().apply(plan)
+            performanceService.executePlan().invoke(plan)
         }.then { report ->
             assertThat(report.totalCallCount).isGreaterThan(100)
             assertThat(report.totalCallCount)

@@ -1,7 +1,7 @@
 package digital.capsa.perfrunner
 
 import com.blazemeter.jmeter.threads.concurrency.ConcurrencyThreadGroup
-import digital.capsa.perfrunner.domain.ExecutionPlan
+import digital.capsa.perfrunner.domain.Plan
 import org.apache.jmeter.assertions.ResponseAssertion
 import org.apache.jmeter.assertions.gui.AssertionGui
 import org.apache.jmeter.control.TransactionController
@@ -19,7 +19,7 @@ import org.apache.jorphan.collections.ListedHashTree
 
 object JMeterRunner {
 
-    fun exec(execPlan: ExecutionPlan): JMeterSummariser {
+    fun execute(plan: Plan): JMeterSummariser {
         val jmeter = StandardJMeterEngine()
         val jmeterHome = this::class.java.classLoader.getResource("jmeter-home")!!.path
 
@@ -28,11 +28,11 @@ object JMeterRunner {
 
         val rootTree = ListedHashTree()
 
-        val testPlan = TestPlan(execPlan.name)
+        val testPlan = TestPlan(plan.name)
         val testPlanTree = rootTree.add(testPlan)
 
         for ((name, httpRequest, targetConcurrency, rampUpTime, rampUpStepCount, holdTargetRateTime,
-            assertionResponseCode) in execPlan.groups) {
+            assertionResponseCode) in plan.groups) {
 
             val threadGroup = ConcurrencyThreadGroup()
             threadGroup.name = name
