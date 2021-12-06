@@ -21,6 +21,12 @@ subprojects {
 
     group = "telus.capsa"
 
+    java {
+        withJavadocJar()
+        withSourcesJar()
+    }
+
+
     tasks.withType<Detekt> {
         failFast = false
         jvmTarget = "11"
