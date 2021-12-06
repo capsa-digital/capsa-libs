@@ -27,4 +27,5 @@ plugins {
 rootProject.name = "capsa-telus-libs"
 include("capsa-core")
 include("capsa-it")
+include("capsa-perfrunner")
 
