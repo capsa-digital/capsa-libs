@@ -20,8 +20,8 @@ dependencies {
     implementation(project(":capsa-it"))
     implementation("com.willowtreeapps.assertk:assertk-jvm")
 }
-
-tasks.getByName<BootJar>("bootJar") {
-    enabled = true
-    archiveVersion.set("latest")
-}
+// TODO: Uncomment to build jar for perfrunner spring app.
+//tasks.getByName<BootJar>("bootJar") {
+//    enabled = true
+//    archiveVersion.set("latest")
+//}
