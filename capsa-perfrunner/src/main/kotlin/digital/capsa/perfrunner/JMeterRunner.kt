@@ -2,6 +2,7 @@ package digital.capsa.perfrunner
 
 import com.blazemeter.jmeter.threads.concurrency.ConcurrencyThreadGroup
 import digital.capsa.perfrunner.domain.Plan
+import org.apache.commons.io.FileUtils
 import org.apache.jmeter.assertions.ResponseAssertion
 import org.apache.jmeter.assertions.gui.AssertionGui
 import org.apache.jmeter.control.TransactionController
@@ -16,15 +17,23 @@ import org.apache.jmeter.testelement.TestElement
 import org.apache.jmeter.testelement.TestPlan
 import org.apache.jmeter.util.JMeterUtils
 import org.apache.jorphan.collections.ListedHashTree
+import org.springframework.core.io.ClassPathResource
+import java.io.File
 
 object JMeterRunner {
 
     fun execute(plan: Plan): JMeterSummariser {
         val jmeter = StandardJMeterEngine()
-        val jmeterHome = this::class.java.classLoader.getResource("jmeter-home")!!.path
 
-        JMeterUtils.setJMeterHome(jmeterHome)
-        JMeterUtils.loadJMeterProperties("$jmeterHome/jmeter.properties")
+        val jmeterPropertiesFile = File("jmeter-home/jmeter.properties")
+
+        if (!jmeterPropertiesFile.exists()) {
+            val inputStream = ClassPathResource("/jmeter-home/jmeter.properties", this::class.java).inputStream
+            FileUtils.copyInputStreamToFile(inputStream, jmeterPropertiesFile)
+        }
+
+        JMeterUtils.setJMeterHome(jmeterPropertiesFile.path.replace("/jmeter.properties", ""))
+        JMeterUtils.loadJMeterProperties(jmeterPropertiesFile.path)
 
         val rootTree = ListedHashTree()
 

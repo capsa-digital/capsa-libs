@@ -17,11 +17,12 @@ dependencies {
     implementation("org.apache.jmeter:ApacheJMeter_core")
     implementation("org.apache.jmeter:ApacheJMeter_http")
     implementation("kg.apc:jmeter-plugins-casutg")
+    implementation("commons-io:commons-io:2.11.0")
     implementation(project(":capsa-it"))
     implementation("com.willowtreeapps.assertk:assertk-jvm")
 }
-// TODO: Uncomment to build jar for perfrunner spring app.
-//tasks.getByName<BootJar>("bootJar") {
-//    enabled = true
-//    archiveVersion.set("latest")
-//}
+
+tasks.getByName<BootJar>("bootJar") {
+    enabled = true
+    archiveVersion.set("latest")
+}
