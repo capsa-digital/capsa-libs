@@ -4,6 +4,7 @@
 **/build/
 **/out/
 **/bin/
+**/jmeter-home/
 
 .project
 
