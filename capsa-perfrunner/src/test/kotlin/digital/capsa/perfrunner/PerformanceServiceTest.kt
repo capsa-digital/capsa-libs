@@ -52,10 +52,10 @@ internal class PerformanceServiceTest {
         }.on { plan ->
             performanceService.executePlan().invoke(plan)
         }.then { report ->
+            println(report.summary)
             assertThat(report.totalCallCount).isGreaterThan(100)
             assertThat(report.totalCallCount)
                 .isEqualTo(java.net.URL("http://localhost:$port/getCallCount").readText().toLong())
-            println(report.summary)
         }
     }
 
@@ -84,10 +84,10 @@ internal class PerformanceServiceTest {
         }.on { plan ->
             performanceService.executePlan().invoke(plan)
         }.then { report ->
+            println(report.summary)
             assertThat(report.totalCallCount).isGreaterThan(100)
             assertThat(report.totalCallCount)
                 .isEqualTo(java.net.URL("http://localhost:$port/getCallCount").readText().toLong())
-            println(report.summary)
         }
     }
 
@@ -116,10 +116,10 @@ internal class PerformanceServiceTest {
         }.on { plan ->
             performanceService.executePlan().invoke(plan)
         }.then { report ->
+            println(report.summary)
             assertThat(report.totalCallCount).isGreaterThan(100)
             assertThat(report.totalCallCount)
                 .isEqualTo(java.net.URL("http://localhost:$port/getCallCount").readText().toLong())
-            println(report.summary)
         }
     }
 
@@ -148,10 +148,10 @@ internal class PerformanceServiceTest {
         }.on { plan ->
             performanceService.executePlan().invoke(plan)
         }.then { report ->
+            println(report.summary)
             assertThat(report.totalCallCount).isGreaterThan(100)
             assertThat(report.totalCallCount)
                 .isEqualTo(java.net.URL("http://localhost:$port/getCallCount").readText().toLong())
-            println(report.summary)
         }
     }
 
@@ -180,11 +180,11 @@ internal class PerformanceServiceTest {
         }.on { plan ->
             performanceService.executePlan().invoke(plan)
         }.then { report ->
+            println(report.summary)
             assertThat(report.totalCallCount).isGreaterThan(100)
             assertThat(report.totalCallCount)
                 .isEqualTo(java.net.URL("http://localhost:$port/getCallCount").readText().toLong())
             assertThat(report.totalErrorCount).isEqualTo(2)
-            println(report.summary)
         }
     }
 
