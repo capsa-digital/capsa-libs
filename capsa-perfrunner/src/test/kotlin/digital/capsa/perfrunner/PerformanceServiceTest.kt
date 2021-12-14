@@ -5,8 +5,8 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isGreaterThan
 import digital.capsa.it.gherkin.given
 import digital.capsa.perfrunner.domain.ExecutionGroup
-import digital.capsa.perfrunner.domain.Plan
 import digital.capsa.perfrunner.domain.HttpRequest
+import digital.capsa.perfrunner.domain.Plan
 import digital.capsa.perfrunner.domain.URL
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
@@ -28,7 +28,7 @@ internal class PerformanceServiceTest {
     lateinit var performanceService: PerformanceService
 
     @Test
-    fun `executePlan - Happy path - GET`() {
+    fun `executePlan - positive - GET`() {
         given {
             Plan(
                 "PlanName",
@@ -36,7 +36,7 @@ internal class PerformanceServiceTest {
                     ExecutionGroup(
                         "GroupName1",
                         HttpRequest(
-                            URL("http", "localhost", port.toInt(), "/testGet", ""),
+                            URL("http", "localhost", port.toInt(), "/testGet"),
                             HttpRequest.Method.GET,
                             null,
                             ""
@@ -60,7 +60,39 @@ internal class PerformanceServiceTest {
     }
 
     @Test
-    fun `executePlan - Happy path - POST`() {
+    fun `executePlan - positive - GET with query params`() {
+        given {
+            Plan(
+                "PlanName",
+                setOf(
+                    ExecutionGroup(
+                        "GroupName1",
+                        HttpRequest(
+                            URL("http", "localhost", port.toInt(), "/testGetWithParams?number=777&word=cat"),
+                            HttpRequest.Method.GET,
+                            null,
+                            ""
+                        ),
+                        "1",
+                        "0",
+                        "0",
+                        "1",
+                        "200"
+                    )
+                )
+            )
+        }.on { plan ->
+            performanceService.executePlan().invoke(plan)
+        }.then { report ->
+            assertThat(report.totalCallCount).isGreaterThan(100)
+            assertThat(report.totalCallCount)
+                .isEqualTo(java.net.URL("http://localhost:$port/getCallCount").readText().toLong())
+            println(report.summary)
+        }
+    }
+
+    @Test
+    fun `executePlan - positive - POST`() {
         given {
             Plan(
                 "PlanName",
@@ -68,10 +100,42 @@ internal class PerformanceServiceTest {
                     ExecutionGroup(
                         "GroupName",
                         HttpRequest(
-                            URL("http", "localhost", port.toInt(), "/testPost", ""),
+                            URL("http", "localhost", port.toInt(), "/testPost"),
                             HttpRequest.Method.POST,
                             mapOf("my-header-value" to "Hello header"),
                             "Hello body"
+                        ),
+                        "1",
+                        "0",
+                        "0",
+                        "1",
+                        "200"
+                    )
+                )
+            )
+        }.on { plan ->
+            performanceService.executePlan().invoke(plan)
+        }.then { report ->
+            assertThat(report.totalCallCount).isGreaterThan(100)
+            assertThat(report.totalCallCount)
+                .isEqualTo(java.net.URL("http://localhost:$port/getCallCount").readText().toLong())
+            println(report.summary)
+        }
+    }
+
+    @Test
+    fun `executePlan - positive - POST with query params`() {
+        given {
+            Plan(
+                "PlanName",
+                setOf(
+                    ExecutionGroup(
+                        "GroupName1",
+                        HttpRequest(
+                            URL("http", "localhost", port.toInt(), "/testPostWithParams?number=777&word=cat"),
+                            HttpRequest.Method.POST,
+                            null,
+                            "Hello body!"
                         ),
                         "1",
                         "0",
@@ -100,7 +164,7 @@ internal class PerformanceServiceTest {
                     ExecutionGroup(
                         "GroupName",
                         HttpRequest(
-                            URL("http", "localhost", port.toInt(), "/testGetWithErrors", ""),
+                            URL("http", "localhost", port.toInt(), "/testGetWithErrors"),
                             HttpRequest.Method.GET,
                             null,
                             ""
@@ -121,6 +185,36 @@ internal class PerformanceServiceTest {
                 .isEqualTo(java.net.URL("http://localhost:$port/getCallCount").readText().toLong())
             assertThat(report.totalErrorCount).isEqualTo(2)
             println(report.summary)
+        }
+    }
+
+    @Test
+    fun `executePlan - negative - GET with body`() {
+        given {
+            Plan(
+                "PlanName",
+                setOf(
+                    ExecutionGroup(
+                        "GroupName",
+                        HttpRequest(
+                            URL("http", "localhost", port.toInt(), "/testGetWithErrors"),
+                            HttpRequest.Method.GET,
+                            null,
+                            "Non-empty body"
+                        ),
+                        "1",
+                        "0",
+                        "0",
+                        "1",
+                        "200"
+                    )
+                )
+            )
+        }.onError { plan ->
+            performanceService.executePlan().invoke(plan)
+        }.then { error ->
+            assertThat(error::class.simpleName).isEqualTo("PerfRunnerException")
+            assertThat(error.message).isEqualTo("GET method does not support sending request body")
         }
     }
 }

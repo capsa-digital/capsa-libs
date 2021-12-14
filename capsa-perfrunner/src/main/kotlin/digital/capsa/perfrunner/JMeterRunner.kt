@@ -63,16 +63,22 @@ object JMeterRunner {
             val transactionControllerTree = threadGroupTree.add(transactionController)
 
             val httpSampler = HTTPSamplerProxy()
-            httpSampler.domain = httpRequest.url.host
-            httpRequest.url.port?.let { httpSampler.port = httpRequest.url.port }
-            httpSampler.path = httpRequest.url.path + "?" + httpRequest.url.query
-            httpSampler.protocol = httpRequest.url.scheme
             httpSampler.method = httpRequest.method.name
-            httpSampler.postBodyRaw = true
-            val httpArgument = HTTPArgument()
-            httpArgument.name = "data"
-            httpArgument.value = httpRequest.body
-            httpSampler.arguments.addArgument(httpArgument)
+            httpSampler.protocol = httpRequest.url.scheme
+            httpSampler.domain = httpRequest.url.host
+            httpRequest.url.port?.let { httpSampler.port = it }
+            httpRequest.url.path?.let { httpSampler.path = it }
+            if (!httpRequest.body.isNullOrEmpty()) {
+                if (httpRequest.method.name in listOf("GET", "DELETE", "OPTIONS")) {
+                    throw PerfRunnerException("${httpRequest.method.name} method does not support sending request body")
+                } else {
+                    httpSampler.postBodyRaw = true
+                    val httpArgument = HTTPArgument()
+                    httpArgument.name = "body"
+                    httpArgument.value = httpRequest.body
+                    httpSampler.arguments.addArgument(httpArgument)
+                }
+            }
 
             val httpSamplerTree = transactionControllerTree.add(httpSampler)
 

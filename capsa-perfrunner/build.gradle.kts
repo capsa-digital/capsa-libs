@@ -1,5 +1,3 @@
-import org.springframework.boot.gradle.tasks.bundling.BootJar
-
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-compiler-embeddable")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
@@ -20,9 +18,4 @@ dependencies {
     implementation("commons-io:commons-io:2.11.0")
     implementation(project(":capsa-it"))
     implementation("com.willowtreeapps.assertk:assertk-jvm")
-}
-
-tasks.getByName<BootJar>("bootJar") {
-    enabled = true
-    archiveVersion.set("latest")
 }

@@ -24,6 +24,31 @@ class MainController {
         return "Count: ${callCount.getAndIncrement()}"
     }
 
+    @GetMapping("/testGetWithParams")
+    fun getParamRequest(
+        @RequestParam("number") number: String,
+        @RequestParam("word") word: String,
+    ): String {
+        return if (number == "777" && word == "cat") {
+            "Count: ${callCount.getAndIncrement()}"
+        } else {
+            "Something's not right"
+        }
+    }
+
+    @PostMapping("/testPostWithParams")
+    fun postParamRequest(
+        @RequestParam("number") number: String,
+        @RequestParam("word") word: String,
+        @RequestBody body: String
+    ): String {
+        return if (number == "777" && word == "cat" && body == "Hello body!") {
+            "Count: ${callCount.getAndIncrement()}"
+        } else {
+            "Something's not right"
+        }
+    }
+
     @GetMapping("/testGetWithErrors")
     fun getRequestWithErrors(): ResponseEntity<String> {
         callCount.incrementAndGet()
