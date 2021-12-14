@@ -14,7 +14,10 @@ class PerformanceService {
         Report(
             jMeterSummariser.getSummary(),
             jMeterSummariser.getNumSamples(),
-            jMeterSummariser.getErrorCount()
+            jMeterSummariser.getErrorCount(),
+            jMeterSummariser.getThroughput(),
+            jMeterSummariser.getAverage(),
+            jMeterSummariser.getMaxResponseTime()
         )
     }
 }

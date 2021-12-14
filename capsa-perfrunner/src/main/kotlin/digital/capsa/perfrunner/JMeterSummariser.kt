@@ -33,6 +33,8 @@ class JMeterSummariser : Summariser() {
 
     fun getNumSamples(): Long = total.count
 
+    fun getThroughput(): Double = total.rate
+
     fun getAverage(): Double = total.elapsed * 1.0 / total.count
 
     fun getMedian(): Long = total.median.toLong()
@@ -44,6 +46,8 @@ class JMeterSummariser : Summariser() {
     fun getNintyFivePercent(): Long = total.getPercentPoint(0.95).toLong()
 
     fun getNintyNineePercent(): Long = total.getPercentPoint(0.99).toLong()
+
+    fun getMaxResponseTime(): Long = total.max.toLong()
 
     fun getErrorCount(): Long = total.errorCount
 
