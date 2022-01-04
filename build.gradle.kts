@@ -48,7 +48,6 @@ subprojects {
         maven { setUrl("https://repo1.maven.org/maven2") }
         mavenCentral()
         google()
-        jcenter()
         maven { setUrl("https://mvnrepository.com/artifact") }
         maven { setUrl("https://dl.bintray.com/kotlin/kotlinx.html") }
     }
