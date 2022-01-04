@@ -11,6 +11,5 @@ object CoreVersion {
     const val LOGBACK_CONTRIB = "0.1.5"
     const val OPENAPI = "1.5.8"
     const val REACTOR_BOM = "Californium-RELEASE"
-    const val SELENIUM = "3.141.59"
     const val WIREMOCK_JRE8 = "2.27.2"
 }
