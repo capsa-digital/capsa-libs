@@ -3,7 +3,6 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-test")
     implementation("org.springframework.ws:spring-ws-core")
     implementation("org.springframework.cloud:spring-cloud-function-web:3.1.5")
-    implementation("org.apache.jmeter:ApacheJMeter_core")
     implementation("org.apache.jmeter:ApacheJMeter_http")
     implementation("kg.apc:jmeter-plugins-casutg")
     implementation("commons-io:commons-io:2.11.0")
