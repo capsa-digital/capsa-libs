@@ -2,8 +2,7 @@ package digital.capsa.it.aggregate
 
 import digital.capsa.core.logger
 import digital.capsa.it.TestContext
-import java.util.Random
-import java.util.UUID
+import java.util.*
 import kotlin.reflect.KClass
 import kotlin.reflect.KVisibility
 import kotlin.reflect.full.declaredMemberProperties

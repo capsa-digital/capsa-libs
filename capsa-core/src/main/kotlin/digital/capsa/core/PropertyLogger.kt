@@ -1,11 +1,11 @@
 package digital.capsa.core
 
-import java.util.Arrays
-import java.util.stream.StreamSupport
 import org.springframework.boot.context.event.ApplicationReadyEvent
 import org.springframework.core.env.AbstractEnvironment
 import org.springframework.core.env.EnumerablePropertySource
 import org.springframework.core.env.Environment
+import java.util.*
+import java.util.stream.StreamSupport
 
 object PropertyLogger {
     fun printPropertiesOnStartup() {
@@ -52,7 +52,7 @@ object PropertyLogger {
 
     private fun sanitizePropertyValue(name: String, value: String?): String? {
         return if ((name.contains("password", ignoreCase = true)
-                || name.contains("secret", ignoreCase = true)) && value?.isNotBlank() != false
+                    || name.contains("secret", ignoreCase = true)) && value?.isNotBlank() != false
         ) {
             "*****"
         } else {

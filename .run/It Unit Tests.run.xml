@@ -1,13 +1,13 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="It Unit Tests" type="JUnit" factoryName="JUnit">
-    <module name="capsa-telus-libs.capsa-it.test" />
-    <option name="ALTERNATIVE_JRE_PATH" value="11" />
-    <option name="MAIN_CLASS_NAME" value="" />
-    <option name="METHOD_NAME" value="" />
-    <option name="TEST_OBJECT" value="tags" />
-    <tag value="unit" />
-    <method v="2">
-      <option name="Make" enabled="true" />
-    </method>
-  </configuration>
+    <configuration default="false" name="It Unit Tests" type="JUnit" factoryName="JUnit">
+        <module name="capsa-telus-libs.capsa-it.test"/>
+        <option name="ALTERNATIVE_JRE_PATH" value="11"/>
+        <option name="MAIN_CLASS_NAME" value=""/>
+        <option name="METHOD_NAME" value=""/>
+        <option name="TEST_OBJECT" value="tags"/>
+        <tag value="unit"/>
+        <method v="2">
+            <option name="Make" enabled="true"/>
+        </method>
+    </configuration>
 </component>
