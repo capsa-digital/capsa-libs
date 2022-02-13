@@ -10,7 +10,6 @@ import java.util.stream.Stream
 class TabularArgumentProvider : ArgumentsProvider, AnnotationConsumer<TabularSource?> {
 
     private var annotation: TabularSource? = null
-    var index = AtomicLong(0)
 
     override fun provideArguments(context: ExtensionContext?): Stream<out Arguments> {
         return this.annotation!!.value.trimMargin().lines()
