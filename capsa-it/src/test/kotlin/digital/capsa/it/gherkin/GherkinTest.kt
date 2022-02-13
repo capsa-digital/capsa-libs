@@ -1,8 +1,8 @@
 package digital.capsa.it.gherkin
 
+import kotlin.test.assertEquals
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
-import kotlin.test.assertEquals
 
 @Tag("unit")
 class GherkinTest {
