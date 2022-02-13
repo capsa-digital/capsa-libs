@@ -4,10 +4,12 @@
 **/build/
 **/out/
 **/bin/
+**/jmeter-home/
 
 .project
 
-/.idea/*
+**/.idea/**
+!.idea/codeStyles/
 
 **/main/protoGen
 .DS_Store
