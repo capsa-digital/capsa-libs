@@ -108,8 +108,10 @@ class RecordParser(
         } else default.invoke()
     }
 
-    fun readField(from: Int,
-                  toExclusive: Int): String {
+    fun readField(
+        from: Int,
+        toExclusive: Int
+    ): String {
         return if (line.length >= toExclusive) line.substring(from, toExclusive).trim() else ""
     }
 }

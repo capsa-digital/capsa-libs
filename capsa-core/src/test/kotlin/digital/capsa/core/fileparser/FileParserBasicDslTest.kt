@@ -1,11 +1,11 @@
 package digital.capsa.core.fileparser
 
-import java.io.BufferedReader
-import java.io.StringReader
-import java.time.LocalDate
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
+import java.io.BufferedReader
+import java.io.StringReader
+import java.time.LocalDate
 
 @Tag("unit")
 class FileParserBasicDslTest {
