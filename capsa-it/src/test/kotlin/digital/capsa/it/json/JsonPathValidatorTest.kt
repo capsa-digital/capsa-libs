@@ -3,9 +3,9 @@ package digital.capsa.it.json
 import digital.capsa.it.gherkin.given
 import digital.capsa.it.validation.OpType
 import digital.capsa.it.validation.ValidationRule
-import kotlin.test.assertTrue
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
+import kotlin.test.assertTrue
 
 @Suppress("MaxLineLength")
 @Tag("unit")
@@ -30,9 +30,9 @@ class JsonPathValidatorTest {
         }.then {
             JsonPathValidator.assertJson(
                 it, listOf(
-                ValidationRule("$.*.id", OpType.equal, listOf("12345", "23456")),
-                ValidationRule("@[?(@.id == '12345')].data", OpType.equal, "abcd"),
-                ValidationRule("@[?(@.id == '23456')].num", OpType.equal, 23456)
+                    ValidationRule("$.*.id", OpType.equal, listOf("12345", "23456")),
+                    ValidationRule("@[?(@.id == '12345')].data", OpType.equal, "abcd"),
+                    ValidationRule("@[?(@.id == '23456')].num", OpType.equal, 23456)
                 )
             )
         }
@@ -44,7 +44,7 @@ class JsonPathValidatorTest {
             """
             []
         """.trimIndent(), listOf(
-            ValidationRule("$.*.id", OpType.equal, emptyList<String>())
+                ValidationRule("$.*.id", OpType.equal, emptyList<String>())
             )
         )
     }
@@ -61,7 +61,7 @@ class JsonPathValidatorTest {
               "id": "23456"
             }]
         """.trimIndent(), listOf(
-                ValidationRule("$.*.id", OpType.equal, "")
+                    ValidationRule("$.*.id", OpType.equal, "")
                 )
             )
         } catch (e: AssertionError) {
@@ -78,7 +78,7 @@ class JsonPathValidatorTest {
               "id": "12345"
             }
         """.trimIndent(), listOf(
-            ValidationRule("$.id", OpType.regex, ".*")
+                ValidationRule("$.id", OpType.regex, ".*")
             )
         )
     }
@@ -91,8 +91,8 @@ class JsonPathValidatorTest {
               "cause": "Cannot deserialize value of type `java.util.UUID` from String \"a2f674455-e5f4-4946-a19a-xdace6e1a598\": UUID has to be represented by standard 36-char representation\n at [Source: (String)\"{\"region\":\"qc\",\"listOfId\":[\"a2f674455-e5f4-4946-a19a-xdace6e1a598\"]}\"; line: 1, column: 28]"
             }
         """.trimIndent(), listOf(
-            ValidationRule("$.cause", OpType.like, "Cannot deserialize value of type"),
-            ValidationRule("$.cause", OpType.like, "UUID has to be represented by standard 36-char representation")
+                ValidationRule("$.cause", OpType.like, "Cannot deserialize value of type"),
+                ValidationRule("$.cause", OpType.like, "UUID has to be represented by standard 36-char representation")
             )
         )
     }
