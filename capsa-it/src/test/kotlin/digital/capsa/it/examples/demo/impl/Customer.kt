@@ -1,6 +1,8 @@
 package digital.capsa.it.examples.demo.impl
 
 import digital.capsa.it.aggregate.AbstractAggregate
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import java.util.*
 
 class Customer(
@@ -28,4 +30,9 @@ fun customer(init: Customer.() -> Unit): Customer {
 
 enum class AccountStatus {
     Active, Disabled
+}
+
+fun `customer created`(shop: Shop, customer: Customer): ResponseEntity<String> {
+    // Set-up Customer Mock
+    return ResponseEntity(HttpStatus.OK)
 }

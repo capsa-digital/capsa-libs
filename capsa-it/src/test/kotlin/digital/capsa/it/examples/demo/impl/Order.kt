@@ -1,6 +1,9 @@
 package digital.capsa.it.examples.demo.impl
 
 import digital.capsa.it.aggregate.AbstractAggregate
+import digital.capsa.it.aggregate.Key
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 
 class Order(
     var itemNumber: Int? = null,
@@ -20,4 +23,14 @@ fun order(init: Order.() -> Unit): Order {
         construct()
         init()
     }
+}
+
+fun `order submitted`(shop: Shop, customerKey: Key, order: Order): ResponseEntity<String> {
+    // Set-up Customer Mock
+    // Set-up Order Mock
+    return ResponseEntity(
+    """{
+            "itemNumber": "123"
+        }""".trimIndent(), HttpStatus.OK
+    )
 }
