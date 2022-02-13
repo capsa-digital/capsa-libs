@@ -53,8 +53,10 @@ class SwaggerValidator {
             val errors = report.messages.filter { it.level.name == "ERROR" }
 
             if (errors.isNotEmpty()) {
-                throw Error("Schema validation fail because we encounter errors: $errors\n" +
-                    "for url: ${event.request.url}")
+                throw Error(
+                    "Schema validation fail because we encounter errors: $errors\n" +
+                            "for url: ${event.request.url}"
+                )
             }
         } else {
             println("The swagger file $swaggerFile, from resources folder, doesn't exist for url = ${event.request.url}")

@@ -1,5 +1,8 @@
 package digital.capsa.it.xml
 
+import org.jetbrains.kotlin.cli.common.environment.setIdeaIoUseFallback
+import org.w3c.dom.NodeList
+import org.xml.sax.InputSource
 import java.io.StringReader
 import java.io.StringWriter
 import javax.xml.parsers.DocumentBuilderFactory
@@ -11,9 +14,6 @@ import javax.xml.transform.stream.StreamResult
 import javax.xml.xpath.XPath
 import javax.xml.xpath.XPathConstants
 import javax.xml.xpath.XPathFactory
-import org.jetbrains.kotlin.cli.common.environment.setIdeaIoUseFallback
-import org.w3c.dom.NodeList
-import org.xml.sax.InputSource
 
 
 object XmlPathModifier {
