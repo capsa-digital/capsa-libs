@@ -12,7 +12,7 @@ fun <R> onError(block: () -> R): On<Throwable> {
 }
 
 class Given<S>(private val setup: S) {
-    fun <R> on(block: (S) -> R): On<R> = On(block(setup))
+    fun <R> on(block: S.() -> R): On<R> = On(block(setup))
     fun <R> onError(block: (S) -> R): On<Throwable> {
         return try {
             block(setup)
@@ -24,7 +24,7 @@ class Given<S>(private val setup: S) {
 }
 
 class On<R>(private val result: R) {
-    fun <O> then(block: (R) -> O): Then<O> = Then(block(result))
+    fun <O> then(block: R.() -> O): Then<O> = Then(block(result))
 }
 
 class Then<O>(private val result: O)

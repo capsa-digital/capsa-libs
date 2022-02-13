@@ -49,12 +49,12 @@ internal class PerformanceServiceTest {
                     )
                 )
             )
-        }.on { plan ->
-            performanceService.executePlan().invoke(plan)
-        }.then { report ->
-            println(report.summary)
-            assertThat(report.totalCallCount).isGreaterThan(100)
-            assertThat(report.totalCallCount)
+        }.on {
+            performanceService.executePlan().invoke(this)
+        }.then {
+            println(summary)
+            assertThat(totalCallCount).isGreaterThan(100)
+            assertThat(totalCallCount)
                 .isEqualTo(java.net.URL("http://localhost:$port/getCallCount").readText().toLong())
         }
     }
@@ -81,12 +81,12 @@ internal class PerformanceServiceTest {
                     )
                 )
             )
-        }.on { plan ->
-            performanceService.executePlan().invoke(plan)
-        }.then { report ->
-            println(report.summary)
-            assertThat(report.totalCallCount).isGreaterThan(100)
-            assertThat(report.totalCallCount)
+        }.on {
+            performanceService.executePlan().invoke(this)
+        }.then {
+            println(summary)
+            assertThat(totalCallCount).isGreaterThan(100)
+            assertThat(totalCallCount)
                 .isEqualTo(java.net.URL("http://localhost:$port/getCallCount").readText().toLong())
         }
     }
@@ -113,12 +113,12 @@ internal class PerformanceServiceTest {
                     )
                 )
             )
-        }.on { plan ->
-            performanceService.executePlan().invoke(plan)
-        }.then { report ->
-            println(report.summary)
-            assertThat(report.totalCallCount).isGreaterThan(100)
-            assertThat(report.totalCallCount)
+        }.on {
+            performanceService.executePlan().invoke(this)
+        }.then {
+            println(summary)
+            assertThat(totalCallCount).isGreaterThan(100)
+            assertThat(totalCallCount)
                 .isEqualTo(java.net.URL("http://localhost:$port/getCallCount").readText().toLong())
         }
     }
@@ -145,12 +145,12 @@ internal class PerformanceServiceTest {
                     )
                 )
             )
-        }.on { plan ->
-            performanceService.executePlan().invoke(plan)
-        }.then { report ->
-            println(report.summary)
-            assertThat(report.totalCallCount).isGreaterThan(100)
-            assertThat(report.totalCallCount)
+        }.on {
+            performanceService.executePlan().invoke(this)
+        }.then {
+            println(summary)
+            assertThat(totalCallCount).isGreaterThan(100)
+            assertThat(totalCallCount)
                 .isEqualTo(java.net.URL("http://localhost:$port/getCallCount").readText().toLong())
         }
     }
@@ -177,14 +177,15 @@ internal class PerformanceServiceTest {
                     )
                 )
             )
-        }.on { plan ->
-            performanceService.executePlan().invoke(plan)
-        }.then { report ->
-            println(report.summary)
-            assertThat(report.totalCallCount).isGreaterThan(100)
-            assertThat(report.totalCallCount)
+        }.on {
+            this
+            performanceService.executePlan().invoke(this)
+        }.then {
+            println(summary)
+            assertThat(totalCallCount).isGreaterThan(100)
+            assertThat(totalCallCount)
                 .isEqualTo(java.net.URL("http://localhost:$port/getCallCount").readText().toLong())
-            assertThat(report.totalErrorCount).isEqualTo(2)
+            assertThat(totalErrorCount).isEqualTo(2)
         }
     }
 
@@ -212,9 +213,9 @@ internal class PerformanceServiceTest {
             )
         }.onError { plan ->
             performanceService.executePlan().invoke(plan)
-        }.then { error ->
-            assertThat(error::class.simpleName).isEqualTo("PerfRunnerException")
-            assertThat(error.message).isEqualTo("GET method does not support sending request body")
+        }.then {
+            assertThat(this::class.simpleName).isEqualTo("PerfRunnerException")
+            assertThat(message).isEqualTo("GET method does not support sending request body")
         }
     }
 }

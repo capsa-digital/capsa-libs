@@ -26,10 +26,10 @@ class JsonPathValidatorTest {
                 }]
             """
         }.on {
-            it.trimIndent()
+            trimIndent()
         }.then {
             JsonPathValidator.assertJson(
-                it, listOf(
+                this, listOf(
                     ValidationRule("$.*.id", OpType.equal, listOf("12345", "23456")),
                     ValidationRule("@[?(@.id == '12345')].data", OpType.equal, "abcd"),
                     ValidationRule("@[?(@.id == '23456')].num", OpType.equal, 23456)

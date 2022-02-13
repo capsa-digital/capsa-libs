@@ -12,10 +12,10 @@ class GherkinTest {
         given {
             "abc"
         }.on {
-            assertEquals("abc", it)
+            assertEquals("abc", this)
             56
         }.then {
-            assertEquals(56, it)
+            assertEquals(56, this)
         }
     }
 
@@ -24,7 +24,7 @@ class GherkinTest {
         on {
             58
         }.then {
-            assertEquals(58, it)
+            assertEquals(58, this)
         }
     }
 
@@ -35,7 +35,7 @@ class GherkinTest {
         }.onError {
             throw RuntimeException("Exception $it")
         }.then {
-            assertEquals("Exception def", it.message)
+            assertEquals("Exception def", message)
         }
     }
 
@@ -44,7 +44,7 @@ class GherkinTest {
         onError {
             throw RuntimeException("Exception cde")
         }.then {
-            assertEquals("Exception cde", it.message)
+            assertEquals("Exception cde", message)
         }
     }
 
@@ -55,7 +55,7 @@ class GherkinTest {
         }.onError {
             "abc"
         }.then {
-            assertEquals("No error encountered", it.message)
+            assertEquals("No error encountered", message)
         }
     }
 }

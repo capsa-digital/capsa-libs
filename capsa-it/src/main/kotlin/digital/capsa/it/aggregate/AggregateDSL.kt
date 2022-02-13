@@ -27,6 +27,8 @@ interface Aggregate {
     fun getChildCount(kClass: KClass<out Aggregate>): Int
 
     fun construct()
+
+    fun getDescendantCount(kClass: KClass<out Aggregate>): Int
 }
 
 inline fun <reified T> Aggregate.getChild(i: Int): T {
@@ -43,7 +45,7 @@ annotation class AggregateMarker
 data class Key(var value: String)
 
 @AggregateMarker
-abstract class AbstractAggregate(private val aggregateName: String) : Aggregate {
+abstract class AbstractAggregate : Aggregate {
 
     lateinit var context: TestContext
 
@@ -77,7 +79,7 @@ abstract class AbstractAggregate(private val aggregateName: String) : Aggregate 
     }
 
     override fun toString(builder: StringBuilder, nesting: Int) {
-        builder.append("".padStart(nesting * 4) + "$aggregateName ${getAttributes()}\n")
+        builder.append("".padStart(nesting * 4) + "${this::class.simpleName} ${getAttributes()}\n")
         for (c in children) {
             c.toString(builder, nesting + 1)
         }
@@ -96,6 +98,47 @@ abstract class AbstractAggregate(private val aggregateName: String) : Aggregate 
 
     override fun getChildCount(kClass: KClass<out Aggregate>): Int {
         return children.count { kClass.isInstance(it) }
+    }
+
+    override fun getDescendantCount(kClass: KClass<out Aggregate>): Int {
+        fun count(aggregate: Aggregate, kClass: KClass<out Aggregate>): Int {
+            return getChildCount(kClass) + aggregate.children.sumOf { it.getDescendantCount(kClass) }
+        }
+        return count(this, kClass)
+    }
+
+    inline fun <reified T : Aggregate> getDescendant(key: Key): T? {
+        return getRecursiveDescendant(this, T::class, key)
+    }
+
+    fun <T : Aggregate> getRecursiveDescendant(aggregate: Aggregate, kClass: KClass<out T>, key: Key): T? {
+        val children = aggregate.children.filter { it::class == kClass && key == it.key }
+        return if (children.isNotEmpty()) {
+            children[0] as T
+        } else {
+            var child: T? = null
+            for (item in aggregate.children) {
+                child = getRecursiveDescendant(item, kClass, key)
+                if (child != null) {
+                    break
+                }
+            }
+            child
+        }
+    }
+
+    inline fun <reified T : Aggregate> getAncestor(): T? {
+        return getRecursiveAncestor(this, T::class)
+    }
+
+    fun <T : Aggregate> getRecursiveAncestor(aggregate: Aggregate, kClass: KClass<out T>): T? {
+        return if (aggregate.parent == null) {
+            null
+        } else if (aggregate.parent!!::class == kClass) {
+            aggregate.parent!! as T
+        } else {
+            getRecursiveAncestor(aggregate.parent!!, kClass)
+        }
     }
 
     operator fun Key.unaryPlus() {

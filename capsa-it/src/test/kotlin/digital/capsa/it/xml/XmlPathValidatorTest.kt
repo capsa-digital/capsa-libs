@@ -31,7 +31,7 @@ class XmlPathValidatorTest {
             """.trimIndent()
         }.on {
             XmlPathValidator.assertXml(
-                it,
+                this,
                 listOf(
                     ValidationRule("//element/data", OpType.equal, listOf("test1! abcd !1test", "test2@ bcde @2test")),
                     ValidationRule("//element[id='12345']/data", OpType.equal, "test1! abcd !1test"),
@@ -67,9 +67,9 @@ class XmlPathValidatorTest {
                     ValidationRule("//element/data", OpType.equal, listOf("abcd", "1234"))
                 )
             )
-        }.then { ex ->
-            assertThat(ex).isInstanceOf(AssertionError::class)
-            assertThat(ex.message).isEqualTo("XML path //element/data validation failed, document: [#document: null]. Expected <[abcd, 1234]>, actual <[abcd, bcde]>.")
+        }.then {
+            assertThat(this).isInstanceOf(AssertionError::class)
+            assertThat(message).isEqualTo("XML path //element/data validation failed, document: [#document: null]. Expected <[abcd, 1234]>, actual <[abcd, bcde]>.")
         }
     }
 
@@ -96,9 +96,9 @@ class XmlPathValidatorTest {
                     ValidationRule("//element[id='12345']/data", OpType.like, "ab cd")
                 )
             )
-        }.then { ex ->
-            assertThat(ex).isInstanceOf(AssertionError::class)
-            assertThat(ex.message).isEqualTo("expected [XML path //element[id='12345']/data validation failed, document: [#document: null]] to match:</.*ab cd.*/> but was:<\"test1! abcd !1test\">")
+        }.then {
+            assertThat(this).isInstanceOf(AssertionError::class)
+            assertThat(message).isEqualTo("expected [XML path //element[id='12345']/data validation failed, document: [#document: null]] to match:</.*ab cd.*/> but was:<\"test1! abcd !1test\">")
         }
     }
 
@@ -125,9 +125,9 @@ class XmlPathValidatorTest {
                     ValidationRule("//element[id='12345']/data", OpType.regex, ".*ab cd.*")
                 )
             )
-        }.then { ex ->
-            assertThat(ex).isInstanceOf(AssertionError::class)
-            assertThat(ex.message).isEqualTo("expected [XML path //element[id='12345']/data validation failed, document: [#document: null]] to match:</.*ab cd.*/> but was:<\"test1! abcd !1test\">")
+        }.then {
+            assertThat(this).isInstanceOf(AssertionError::class)
+            assertThat(message).isEqualTo("expected [XML path //element[id='12345']/data validation failed, document: [#document: null]] to match:</.*ab cd.*/> but was:<\"test1! abcd !1test\">")
         }
     }
 
@@ -154,9 +154,9 @@ class XmlPathValidatorTest {
                     ValidationRule("//invalid/data", OpType.equal, listOf("abcd", "bcde"))
                 )
             )
-        }.then { ex ->
-            assertThat(ex).isInstanceOf(Error::class)
-            assertThat(ex.message).isEqualTo("Path not found, document: [#document: null], path: //invalid/data")
+        }.then {
+            assertThat(this).isInstanceOf(Error::class)
+            assertThat(message).isEqualTo("Path not found, document: [#document: null], path: //invalid/data")
         }
     }
 }
