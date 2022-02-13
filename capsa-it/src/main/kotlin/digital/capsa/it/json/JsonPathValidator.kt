@@ -6,8 +6,8 @@ import com.jayway.jsonpath.Configuration
 import com.jayway.jsonpath.JsonPath
 import digital.capsa.it.validation.OpType
 import digital.capsa.it.validation.ValidationRule
-import kotlin.test.assertEquals
 import net.minidev.json.JSONArray
+import kotlin.test.assertEquals
 
 object JsonPathValidator {
 

@@ -14,9 +14,9 @@ class TabularArgumentProvider : ArgumentsProvider, AnnotationConsumer<TabularSou
 
     override fun provideArguments(context: ExtensionContext?): Stream<out Arguments> {
         return this.annotation!!.value.trimMargin().lines()
-                .map { line ->
-                    line.split('|').dropLast(1).map { it.trim() }.toTypedArray()
-                }.stream().map { Arguments.of(*it) }
+            .map { line ->
+                line.split('|').dropLast(1).map { it.trim() }.toTypedArray()
+            }.stream().map { Arguments.of(*it) }
     }
 
     override fun accept(annotation: TabularSource?) {

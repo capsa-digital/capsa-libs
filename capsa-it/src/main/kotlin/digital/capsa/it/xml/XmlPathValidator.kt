@@ -4,6 +4,9 @@ import assertk.assertThat
 import assertk.assertions.matches
 import digital.capsa.it.validation.OpType
 import digital.capsa.it.validation.ValidationRule
+import org.jetbrains.kotlin.cli.common.environment.setIdeaIoUseFallback
+import org.w3c.dom.NodeList
+import org.xml.sax.InputSource
 import java.io.StringReader
 import javax.xml.parsers.DocumentBuilder
 import javax.xml.parsers.DocumentBuilderFactory
@@ -11,9 +14,6 @@ import javax.xml.xpath.XPath
 import javax.xml.xpath.XPathConstants
 import javax.xml.xpath.XPathFactory
 import kotlin.test.assertEquals
-import org.jetbrains.kotlin.cli.common.environment.setIdeaIoUseFallback
-import org.w3c.dom.NodeList
-import org.xml.sax.InputSource
 
 
 object XmlPathValidator {
