@@ -20,7 +20,7 @@ import org.springframework.http.HttpStatus
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class OrderTest {
 
-    private companion object OrderTestContext : ShopTestContext()
+    companion object OrderTestContext : ShopTestContext()
 
     @BeforeAll
     fun `prepare test data`() {
@@ -32,7 +32,7 @@ class OrderTest {
                 itemNumber = 234; amount = 30
             }
             customer {
-                +Key("Customer-1")
+                -"Customer-1"
                 order {
                     itemNumber = 123; amount = 1
                 }
@@ -47,14 +47,14 @@ class OrderTest {
     fun `submit order test`() {
         given {
             `customer created`(
-                shop = shop,
+                context = OrderTestContext,
                 customer = customer {
-                    +Key("Customer-2")
+                    -"Customer-2"
                 }
             )
         }.on {
             `order submitted`(
-                shop = shop,
+                context = OrderTestContext,
                 customerKey = Key("Customer-2"),
                 order = order {
                     itemNumber = 123

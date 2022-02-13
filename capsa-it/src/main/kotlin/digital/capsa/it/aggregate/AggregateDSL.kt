@@ -141,8 +141,8 @@ abstract class AbstractAggregate : Aggregate {
         }
     }
 
-    operator fun Key.unaryPlus() {
-        key = this
+    operator fun String.unaryMinus() {
+        key = Key(this)
     }
 
     fun nextRandomInt(seed: Int, bound: Int): Int {

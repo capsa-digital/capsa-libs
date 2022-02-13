@@ -2,6 +2,7 @@ package digital.capsa.it.examples.demo.impl
 
 import digital.capsa.it.aggregate.AbstractAggregate
 import digital.capsa.it.aggregate.Key
+import digital.capsa.it.examples.demo.tests.ShopTestContext
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 
@@ -25,7 +26,7 @@ fun order(init: Order.() -> Unit): Order {
     }
 }
 
-fun `order submitted`(shop: Shop, customerKey: Key, order: Order): ResponseEntity<String> {
+fun `order submitted`(context: ShopTestContext, customerKey: Key, order: Order): ResponseEntity<String> {
     // Set-up Customer Mock
     // Set-up Order Mock
     return ResponseEntity(
