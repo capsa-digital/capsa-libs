@@ -1,10 +1,10 @@
 pluginManagement {
     val gradlePluginVersion = object {
-        val SPRING_BOOT_GRADLE_VERSION = "2.4.1"
-        val SPRING_DEPENDENCY_MANAGEMENT_VERSION = "1.0.10.RELEASE"
-        val KOTLIN_GRADLE_VERSION = "1.4.21"
-        val DETEKT_VERSION = "1.10.0"
-        val GRADLE_ENTERPRISE_VERSION = "3.1"
+        val SPRING_BOOT_GRADLE_VERSION = "2.6.2"
+        val SPRING_DEPENDENCY_MANAGEMENT_VERSION = "1.0.11.RELEASE"
+        val KOTLIN_GRADLE_VERSION = "1.6.10"
+        val DETEKT_VERSION = "1.19.0"
+        val GRADLE_ENTERPRISE_VERSION = "3.8"
         val MOOWORK_VERSION = "1.3.1"
     }
     plugins {
@@ -27,4 +27,5 @@ plugins {
 rootProject.name = "capsa-libs"
 include("capsa-core")
 include("capsa-it")
+include("capsa-perfrunner")
 

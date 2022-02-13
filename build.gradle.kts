@@ -47,7 +47,6 @@ subprojects {
         maven { setUrl("https://repo1.maven.org/maven2") }
         mavenCentral()
         google()
-        jcenter()
         maven { setUrl("https://mvnrepository.com/artifact") }
         maven { setUrl("https://dl.bintray.com/kotlin/kotlinx.html") }
     }
@@ -55,8 +54,6 @@ subprojects {
     dependencyManagement {
         imports {
             mavenBom("io.projectreactor:reactor-bom:${CoreVersion.REACTOR_BOM}")
-            mavenBom("org.springframework.boot:spring-boot-starter-parent:${CoreVersion.SPRING_BOOT}")
-            mavenBom("org.springframework.cloud:spring-cloud-dependencies:${CoreVersion.SPRING_CLOUD}")
         }
         dependencies {
             dependency("ch.qos.logback.contrib:logback-json-classic:${CoreVersion.LOGBACK_CONTRIB}")
@@ -72,6 +69,13 @@ subprojects {
             dependency("com.sun.xml.bind:jaxb-core:${CoreVersion.JAXB_IMPL}")
             dependency("com.sun.xml.bind:jaxb-impl:${CoreVersion.JAXB_IMPL}")
             dependency("javax.xml.bind:jaxb-api:${CoreVersion.JAXB_API}")
+            dependency("org.apache.jmeter:ApacheJMeter_http:${CoreVersion.JMETER}") {
+                exclude("org.apache.logging.log4j:log4j-slf4j-impl")
+                exclude("org.apache.jmeter:bom")
+            }
+            dependency("kg.apc:jmeter-plugins-casutg:${CoreVersion.JMETER_JPGC_CASUTG}") {
+                exclude("org.apache.logging.log4j:log4j-slf4j-impl")
+            }
         }
     }
 
