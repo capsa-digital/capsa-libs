@@ -47,7 +47,7 @@ class OrderTest {
     @TabularSource(
         """
         | 123 | 1 |
-        | 124 | 5 | 
+        | 124 | 5 |
         """
     )
     @ParameterizedTest
