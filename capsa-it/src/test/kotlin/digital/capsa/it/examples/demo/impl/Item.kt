@@ -3,7 +3,7 @@ package digital.capsa.it.examples.demo.impl
 import digital.capsa.it.aggregate.AbstractAggregate
 
 class Item(
-    var itemNumber: Int? = null,
+    var itemNumber: String? = null,
     var amount: Int? = null
 ) : AbstractAggregate() {
 

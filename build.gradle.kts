@@ -28,18 +28,18 @@ subprojects {
 
     tasks.withType<Detekt> {
         failFast = false
-        jvmTarget = "11"
+        jvmTarget = "17"
     }
 
     tasks.withType<JavaCompile> {
-        sourceCompatibility = "11"
-        targetCompatibility = "11"
+        sourceCompatibility = "17"
+        targetCompatibility = "17"
     }
 
     tasks.withType<KotlinCompile> {
         kotlinOptions {
             freeCompilerArgs = listOf("-Xjsr305=strict")
-            jvmTarget = "11"
+            jvmTarget = "17"
         }
     }
 

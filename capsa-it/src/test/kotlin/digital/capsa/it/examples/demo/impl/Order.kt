@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 
 class Order(
-    var itemNumber: Int? = null,
+    var itemNumber: String? = null,
     var amount: Int? = null
 ) : AbstractAggregate() {
 
@@ -31,7 +31,7 @@ fun `order submitted`(context: ShopTestContext, customerKey: Key, order: Order):
     // Set-up Order Mock
     return ResponseEntity(
     """{
-            "itemNumber": "123"
+            "itemNumber": "${order.itemNumber}"
         }""".trimIndent(), HttpStatus.OK
     )
 }
