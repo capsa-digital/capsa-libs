@@ -4,7 +4,8 @@ import digital.capsa.it.aggregate.AbstractAggregate
 
 class Item(
     var itemNumber: String? = null,
-    var amount: Int? = null
+    var amount: Int? = null,
+    var title: String? = null
 ) : AbstractAggregate() {
 
     override fun onCreate() {

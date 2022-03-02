@@ -26,20 +26,19 @@ class OrderTest {
     @BeforeAll
     fun `prepare test data`() {
         shop = shop {
+            item { itemNumber = "123"; amount = 20; title = "Flying Ninja" }
             item {
-                itemNumber = "123"; amount = 20
+                itemNumber = "234"
+                amount = 30
             }
-            item {
-                itemNumber = "234"; amount = 30
+            for (i in 1..50) {
+                item {}
             }
             customer {
                 -"Customer-1"
-                order {
-                    itemNumber = "123"; amount = 1
-                }
-                order {
-                    itemNumber = "234"; amount = 2
-                }
+                name = "John Doe"; phone = "432-234-2345"
+                order { itemNumber = "123"; amount = 1 }
+                order { itemNumber = "234"; amount = 2 }
             }
         }.apply { create(OrderTestContext) }
     }

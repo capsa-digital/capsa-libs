@@ -8,6 +8,7 @@ import java.util.*
 
 class Customer(
     var name: String? = null,
+    var phone: String? = null,
     var accountId: Locale? = null,
     var accountStatus: AccountStatus? = null
 ) : AbstractAggregate() {
