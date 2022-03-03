@@ -112,7 +112,7 @@ class RecordParser(
         from: Int,
         toExclusive: Int
     ): String {
-        return if (line.length >= toExclusive) line.substring(from, toExclusive).trim() else ""
+        return if (line.length >= toExclusive) line.substring(from, toExclusive).trimEnd() else ""
     }
 }
 

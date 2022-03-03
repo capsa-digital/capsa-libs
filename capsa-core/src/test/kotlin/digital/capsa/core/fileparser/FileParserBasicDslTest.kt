@@ -21,7 +21,7 @@ class FileParserBasicDslTest {
                 StringReader(
                     """
                     aaa 23 2021-03-09
-                    bbb cc 23 2021-04-19
+                    bbb  c 23 2021-04-19
                     d e f1 34 2021-05-22
                     """.trimIndent()
                 )
@@ -43,6 +43,10 @@ class FileParserBasicDslTest {
                 )
             }
         }
+        Assertions.assertEquals(0, parser.getRecords()[0].issues.count())
+        Assertions.assertEquals(0, parser.getRecords()[1].issues.count())
+        Assertions.assertEquals(0, parser.getRecords()[2].issues.count())
+
         val header = parser.getRecords()[0].value as Header
         Assertions.assertEquals("aaa", header.string1)
         Assertions.assertEquals(23, header.int1)
@@ -50,7 +54,7 @@ class FileParserBasicDslTest {
 
         var item = parser.getRecords()[1].value as Item
         Assertions.assertEquals("bbb", item.string1)
-        Assertions.assertEquals("cc", item.string2)
+        Assertions.assertEquals(" c", item.string2)
         Assertions.assertEquals(23, item.int1)
         Assertions.assertEquals(LocalDate.parse("2021-04-19"), item.date1)
 
@@ -118,10 +122,12 @@ class FileParserBasicDslTest {
                 )
             }
         }
+        Assertions.assertEquals(1, parser.getRecords()[0].issues.count())
+        Assertions.assertEquals(1, parser.getRecords()[1].issues.count())
+        Assertions.assertEquals(1, parser.getRecords()[2].issues.count())
+
         Assertions.assertEquals("Line length should be 18 but was 17", parser.getRecords()[0].issues[0].message)
         Assertions.assertEquals("Line length should be 22 but was 20", parser.getRecords()[1].issues[0].message)
+        Assertions.assertEquals("Line length should be 22 but was 20", parser.getRecords()[2].issues[0].message)
     }
-
 }
-
-
