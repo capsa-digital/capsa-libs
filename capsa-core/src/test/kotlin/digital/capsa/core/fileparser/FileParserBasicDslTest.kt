@@ -21,7 +21,7 @@ class FileParserBasicDslTest {
                 StringReader(
                     """
                     aaa 23 2021-03-09
-                    bbb  c 23 2021-04-19
+                    bbb cc 23 2021-04-19
                     d e f1 34 2021-05-22
                     """.trimIndent()
                 )
@@ -43,10 +43,6 @@ class FileParserBasicDslTest {
                 )
             }
         }
-        Assertions.assertEquals(0, parser.getRecords()[0].issues.size)
-        Assertions.assertEquals(0, parser.getRecords()[1].issues.size)
-        Assertions.assertEquals(0, parser.getRecords()[2].issues.size)
-
         val header = parser.getRecords()[0].value as Header
         Assertions.assertEquals("aaa", header.string1)
         Assertions.assertEquals(23, header.int1)
@@ -54,7 +50,7 @@ class FileParserBasicDslTest {
 
         var item = parser.getRecords()[1].value as Item
         Assertions.assertEquals("bbb", item.string1)
-        Assertions.assertEquals("c", item.string2)
+        Assertions.assertEquals("cc", item.string2)
         Assertions.assertEquals(23, item.int1)
         Assertions.assertEquals(LocalDate.parse("2021-04-19"), item.date1)
 
@@ -122,59 +118,10 @@ class FileParserBasicDslTest {
                 )
             }
         }
-        Assertions.assertEquals(1, parser.getRecords()[0].issues.size)
-        Assertions.assertEquals(1, parser.getRecords()[1].issues.size)
-        Assertions.assertEquals(1, parser.getRecords()[2].issues.size)
-
         Assertions.assertEquals("Line length should be 18 but was 17", parser.getRecords()[0].issues[0].message)
         Assertions.assertEquals("Line length should be 22 but was 20", parser.getRecords()[1].issues[0].message)
-        Assertions.assertEquals("Line length should be 22 but was 20", parser.getRecords()[2].issues[0].message)
     }
 
-    @Test
-    fun `field does not start at first index`() {
-        val parser = parser(
-            BufferedReader(
-                StringReader(
-                    """
-                    aaa 23 2021-03-09
-                    bbb  c 23 2021-04-19
-                    d e f1 34 2021-05-22
-                    """.trimIndent()
-                )
-            )
-        ) {
-            header(17) {
-                Header(
-                    string1 = optionalField(0, 4, "field1"),
-                    int1 = mandatoryField(4, 7, "field2"),
-                    date1 = optionalField(7, 17, "field3")
-                )
-            }
-            line {
-                Item(
-                    string1 = optionalField(0, 4, "field1"),
-                    string2 = mandatoryField(4, 7, "field2", mustStartAtFirstIndex = true),
-                    int1 = optionalField(7, 10, "field3"),
-                    date1 = optionalField(10, 20, "field4")
-                )
-            }
-        }
-        Assertions.assertEquals(0, parser.getRecords()[0].issues.size)
-        Assertions.assertEquals(1, parser.getRecords()[1].issues.size)
-        Assertions.assertEquals(0, parser.getRecords()[2].issues.size)
-
-        Assertions.assertEquals("The field field2 must start at index 4", parser.getRecords()[1].issues[0].message)
-
-        val header = parser.getRecords()[0].value as Header
-        Assertions.assertEquals("aaa", header.string1)
-        Assertions.assertEquals(23, header.int1)
-        Assertions.assertEquals(LocalDate.parse("2021-03-09"), header.date1)
-
-        val secondItem = parser.getRecords()[2].value as Item
-        Assertions.assertEquals("d e", secondItem.string1)
-        Assertions.assertEquals("f1", secondItem.string2)
-        Assertions.assertEquals(34, secondItem.int1)
-        Assertions.assertEquals(LocalDate.parse("2021-05-22"), secondItem.date1)
-    }
 }
+
+

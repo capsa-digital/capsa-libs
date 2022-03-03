@@ -100,17 +100,12 @@ class RecordParser(
         default: () -> R = {
             throw FileParserException(name?.let { "The field $name is mandatory" } ?: "Field is mandatory")
         },
-        mustStartAtFirstIndex: Boolean = false,
         noinline parser: ((String) -> R)? = null
     ): R {
-        if (mustStartAtFirstIndex && line[from] == ' ') {
-            throw FileParserException(name?.let { "The field $name must start at index $from" } ?: "Field must start at index $from")
-        } else {
-            val str = readField(from, toExclusive)
-            return if (str.isNotBlank()) {
-                parser?.let { parser(str) } ?: defaultTypeParser(str)
-            } else default.invoke()
-        }
+        val str = readField(from, toExclusive)
+        return if (str.isNotBlank()) {
+            parser?.let { parser(str) } ?: defaultTypeParser(str)
+        } else default.invoke()
     }
 
     fun readField(
