@@ -43,6 +43,10 @@ class FileParserBasicDslTest {
                 )
             }
         }
+        Assertions.assertEquals(0, parser.getRecords()[0].issues.count())
+        Assertions.assertEquals(0, parser.getRecords()[1].issues.count())
+        Assertions.assertEquals(0, parser.getRecords()[2].issues.count())
+
         val header = parser.getRecords()[0].value as Header
         Assertions.assertEquals("aaa", header.string1)
         Assertions.assertEquals(23, header.int1)
@@ -118,7 +122,12 @@ class FileParserBasicDslTest {
                 )
             }
         }
+        Assertions.assertEquals(1, parser.getRecords()[0].issues.count())
+        Assertions.assertEquals(1, parser.getRecords()[1].issues.count())
+        Assertions.assertEquals(1, parser.getRecords()[2].issues.count())
+
         Assertions.assertEquals("Line length should be 18 but was 17", parser.getRecords()[0].issues[0].message)
         Assertions.assertEquals("Line length should be 22 but was 20", parser.getRecords()[1].issues[0].message)
+        Assertions.assertEquals("Line length should be 22 but was 20", parser.getRecords()[2].issues[0].message)
     }
 }
