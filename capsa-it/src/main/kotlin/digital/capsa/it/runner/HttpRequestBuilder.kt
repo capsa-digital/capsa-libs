@@ -3,6 +3,9 @@ package digital.capsa.it.runner
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.TextNode
 import digital.capsa.it.json.JsonPathModifier
+import java.io.BufferedReader
+import java.io.InputStreamReader
+import java.util.stream.Collectors
 import org.apache.http.HttpHost
 import org.apache.http.conn.ssl.NoopHostnameVerifier
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory
@@ -17,10 +20,7 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory
 import org.springframework.stereotype.Component
 import org.springframework.web.client.ResponseErrorHandler
 import org.springframework.web.client.RestTemplate
-import java.io.BufferedReader
-import java.io.InputStreamReader
-import java.net.URI
-import java.util.stream.Collectors
+import org.springframework.web.util.UriComponentsBuilder
 
 @Component
 class HttpRequestBuilder(private val objectMapper: ObjectMapper, private val requestFile: String) {
@@ -77,10 +77,16 @@ class HttpRequestBuilder(private val objectMapper: ObjectMapper, private val req
         val requestEntity = HttpEntity(body, headers)
 
         val response = restTemplate.exchange(
-            URI(httpRequest.schema, null, httpRequest.host, httpRequest.port,
-                (httpRequest.basePath?.let { "${httpRequest.basePath}" } ?: "")
-                        + httpRequest.path, httpRequest.queryParams, null).toString(),
-            httpRequest.method, requestEntity, String::class.java)
+            UriComponentsBuilder.newInstance()
+                .scheme(httpRequest.schema)
+                .host(httpRequest.host)
+                .port(httpRequest.port)
+                .path((httpRequest.basePath?.let { "${httpRequest.basePath}" } ?: "") + httpRequest.path)
+                .query(httpRequest.queryParams)
+                .build(true)
+                .toUri(),
+            httpRequest.method, requestEntity, String::class.java
+        )
 
         if (block != null) {
             response.block()
