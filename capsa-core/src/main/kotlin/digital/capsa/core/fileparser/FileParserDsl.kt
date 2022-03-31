@@ -1,6 +1,7 @@
 package digital.capsa.core.fileparser
 
 import java.io.BufferedReader
+import kotlin.math.min
 
 @DslMarker
 annotation class ParserMarker
@@ -112,7 +113,7 @@ class RecordParser(
         from: Int,
         toExclusive: Int
     ): String {
-        return if (line.length >= toExclusive) line.substring(from, toExclusive).trimEnd() else ""
+        return if (line.length > from) line.substring(from, min(toExclusive, line.length)).trimEnd() else ""
     }
 }
 
