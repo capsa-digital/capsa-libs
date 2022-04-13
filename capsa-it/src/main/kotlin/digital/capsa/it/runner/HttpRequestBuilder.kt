@@ -14,10 +14,13 @@ import org.apache.http.impl.client.HttpClients
 import org.apache.http.ssl.SSLContexts
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
+import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.http.client.ClientHttpResponse
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory
 import org.springframework.stereotype.Component
+import org.springframework.util.LinkedMultiValueMap
+import org.springframework.util.MultiValueMap
 import org.springframework.web.client.ResponseErrorHandler
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.util.UriComponentsBuilder
@@ -29,8 +32,17 @@ class HttpRequestBuilder(private val objectMapper: ObjectMapper, private val req
 
     private var token: String? = null
 
+    private var multiPartFormDataBody: MultiValueMap<String, Any> = LinkedMultiValueMap()
+
     fun withTransformation(vararg transformations: Pair<String, Any?>): HttpRequestBuilder {
         this.transformations += transformations.toMap()
+        return this
+    }
+
+    fun withMultiPartFormData(vararg multiPartHttpEntity: Pair<String, HttpEntity<Any>>): HttpRequestBuilder {
+        multiPartHttpEntity.forEach { (key, httpEntity) ->
+            this.multiPartFormDataBody.add(key, httpEntity)
+        }
         return this
     }
 
@@ -73,7 +85,9 @@ class HttpRequestBuilder(private val objectMapper: ObjectMapper, private val req
 
         httpRequest.headers.forEach { (key, value) -> headers[key] = value }
 
-        val body = httpRequest.body?.takeIf { it is TextNode }?.textValue() ?: httpRequest.body.toString()
+        val body = headers.contentType.takeIf { it == MediaType.MULTIPART_FORM_DATA }?.let { multiPartFormDataBody }
+            ?: (httpRequest.body?.takeIf { it is TextNode }?.textValue() ?: httpRequest.body.toString())
+
         val requestEntity = HttpEntity(body, headers)
 
         val response = restTemplate.exchange(
