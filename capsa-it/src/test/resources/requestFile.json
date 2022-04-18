@@ -1,0 +1,14 @@
+{
+  "method": "POST",
+  "schema": "http",
+  "host": "localhost",
+  "port": 8080,
+  "basePath": null,
+  "path": "",
+  "queryParams": "",
+  "connectTimeout": 30000,
+  "readTimeout": 30000,
+  "headers": {
+    "Content-Type": "multipart/form-data"
+  }
+}
