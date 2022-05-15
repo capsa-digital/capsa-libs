@@ -1,6 +1,5 @@
 package digital.capsa.core.auth
 
-import digital.capsa.core.exceptions.AuthTokenException
 import digital.capsa.core.logger
 import org.slf4j.MDC
 import org.springframework.beans.factory.annotation.Value
@@ -86,6 +85,7 @@ class ClientCredentials {
         }
     }
 
+    @Throws(RestClientException::class)
     private fun retrieveAuthToken(scope: String): AuthToken {
         val requestHeaders = HttpHeaders().apply {
             add(
@@ -104,16 +104,12 @@ class ClientCredentials {
         params.add("grant_type", "client_credentials")
         params.add("scope", scope)
 
-        return try {
-            RestTemplate().exchange(
-                authTokenServiceBaseUri,
-                HttpMethod.POST,
-                HttpEntity(params, requestHeaders),
-                AuthResponse::class.java
-            ).body!!.transform()
-        } catch (e: RestClientException) {
-            throw AuthTokenException("Failed to retrieve auth token", e)
-        }
+        return RestTemplate().exchange(
+            authTokenServiceBaseUri,
+            HttpMethod.POST,
+            HttpEntity(params, requestHeaders),
+            AuthResponse::class.java
+        ).body!!.transform()
     }
 
     private fun AuthResponse.transform(): AuthToken = AuthToken(
