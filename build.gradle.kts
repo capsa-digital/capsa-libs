@@ -66,6 +66,7 @@ subprojects {
             dependency("com.google.guava:guava:${CoreVersion.GUAVA}")
             dependency("org.springdoc:springdoc-openapi-ui:${CoreVersion.OPENAPI}")
             dependency("com.sun.xml.bind:jaxb-core:${CoreVersion.JAXB_IMPL}")
+            dependency("org.springframework.integration:spring-integration-mail:${CoreVersion.SPRING_MAIL}")
             dependency("com.sun.xml.bind:jaxb-impl:${CoreVersion.JAXB_IMPL}")
             dependency("javax.xml.bind:jaxb-api:${CoreVersion.JAXB_API}")
             dependency("org.apache.jmeter:ApacheJMeter_http:${CoreVersion.JMETER}") {

@@ -24,6 +24,8 @@ dependencies {
     implementation("org.mockito:mockito-core")
     implementation("org.springframework.boot:spring-boot-starter-data-rest")
     implementation("org.springframework.boot:spring-boot-starter-test")
+    implementation("org.springframework.boot:spring-boot-starter-mail")
+    implementation("org.springframework.integration:spring-integration-mail")
     implementation("org.springframework.ws:spring-ws-core")
     implementation("org.springframework:spring-context")
     implementation(project(":capsa-core"))

@@ -12,4 +12,5 @@ object CoreVersion {
     const val OPENAPI = "1.6.3"
     const val REACTOR_BOM = "Californium-RELEASE"
     const val WIREMOCK_JRE8 = "2.32.0"
+    const val SPRING_MAIL = "5.5.12"
 }
