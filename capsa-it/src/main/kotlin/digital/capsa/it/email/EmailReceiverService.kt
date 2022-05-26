@@ -41,10 +41,10 @@ class EmailReceiverService(
     }
 
     @Synchronized()
-    fun getEmail(
+    fun getEmails(
         to: String,
         numRetries: Int = NUM_RETRYES
-    ): MimeMessage? {
+    ): List<MimeMessage>? {
         val email = extractMainEmail(to)
         logger.info("Trying to get email for $email, number of retries left is $numRetries")
         val imapMailReceiver = imapMailReceiver(email)
@@ -59,20 +59,20 @@ class EmailReceiverService(
                     logger.warn("Found more than one email for $email, number of emails - ${messages.size}")
                 }
                 logger.info("Email for $to is found, subject is ${messages[0].subject}")
-                messages[0]
+                messages
             } else {
                 if (numRetries <= 1) {
                     null
                 } else {
                     Time.sleep(RETRY_TIMEOUT)
-                    getEmail(
+                    getEmails(
                         to = to,
                         numRetries = numRetries - 1
                     )
                 }
             }
         } catch (e: MessagingException) {
-            return getEmail(
+            return getEmails(
                 to = to,
                 numRetries = numRetries - 1
             )
