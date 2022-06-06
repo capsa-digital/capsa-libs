@@ -58,8 +58,6 @@ subprojects {
             mavenBom("io.projectreactor:reactor-bom:${CoreVersion.REACTOR_BOM}")
         }
         dependencies {
-            dependency("ch.qos.logback.contrib:logback-json-classic:${CoreVersion.LOGBACK_CONTRIB}")
-            dependency("ch.qos.logback.contrib:logback-jackson:${CoreVersion.LOGBACK_CONTRIB}")
             dependency("com.willowtreeapps.assertk:assertk-jvm:${CoreVersion.ASSERTK_JVM}")
             dependency("org.hamcrest:java-hamcrest:${CoreVersion.JAVA_HAMCREST}")
             dependency("com.github.tomakehurst:wiremock-jre8:${CoreVersion.WIREMOCK_JRE8}")

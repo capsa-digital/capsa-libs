@@ -1,6 +1,4 @@
 dependencies {
-    implementation("ch.qos.logback.contrib:logback-jackson")
-    implementation("ch.qos.logback.contrib:logback-json-classic")
     implementation("ch.qos.logback:logback-classic")
     implementation("com.fasterxml.jackson.core:jackson-databind")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")

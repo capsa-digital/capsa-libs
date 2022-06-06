@@ -8,7 +8,6 @@ object CoreVersion {
     const val JAXB_IMPL = "3.0.2"
     const val JMETER = "5.4.3"
     const val JMETER_JPGC_CASUTG = "2.10"
-    const val LOGBACK_CONTRIB = "0.1.5"
     const val OPENAPI = "1.6.3"
     const val REACTOR_BOM = "Californium-RELEASE"
     const val WIREMOCK_JRE8 = "2.32.0"
