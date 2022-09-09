@@ -1,9 +1,15 @@
 package digital.capsa.it.email
 
-import kotlin.jvm.Synchronized
-
+import digital.capsa.core.logger
+import org.apache.tomcat.jni.Time
+import org.springframework.beans.factory.BeanFactory
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.integration.mail.ImapMailReceiver
+import org.springframework.integration.mail.SearchTermStrategy
+import org.springframework.stereotype.Component
 import java.net.URLEncoder
-import java.util.Properties
+import java.nio.charset.StandardCharsets
+import java.util.*
 import javax.mail.Flags
 import javax.mail.Folder
 import javax.mail.MessagingException
@@ -12,14 +18,6 @@ import javax.mail.search.AndTerm
 import javax.mail.search.FlagTerm
 import javax.mail.search.NotTerm
 import javax.mail.search.SearchTerm
-import org.springframework.beans.factory.BeanFactory
-import org.springframework.integration.mail.ImapMailReceiver
-import org.springframework.integration.mail.SearchTermStrategy
-import digital.capsa.core.logger
-import java.nio.charset.StandardCharsets
-import org.apache.tomcat.jni.Time
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Component
 
 @Component
 class EmailReceiverService(
@@ -40,43 +38,53 @@ class EmailReceiverService(
         imapMailReceiver.receive()
     }
 
-    @Synchronized()
     fun getEmails(
         to: String,
+        subject: String? = null,
         numRetries: Int = NUM_RETRYES
-    ): List<MimeMessage>? {
-        val email = extractMainEmail(to)
-        logger.info("Trying to get email for $email, number of retries left is $numRetries")
-        val imapMailReceiver = imapMailReceiver(email)
-        try {
-            val messages = imapMailReceiver.receive().filter { message ->
-                message is MimeMessage && message.allRecipients.toList().map { it.toString() }.contains(to)
-            }.map {
-                it as MimeMessage
+    ): List<MimeMessage> {
+        logger.info("Trying to get email for $to, number of retries left is $numRetries")
+
+        for (i in 0 until numRetries) {
+            if (i != 0) {
+                Time.sleep(RETRY_TIMEOUT)
             }
-            return if (messages.isNotEmpty()) {
-                if (messages.size > 1) {
-                    logger.warn("Found more than one email for $email, number of emails - ${messages.size}")
+
+            val messages =
+                try {
+                    getEmails(to = to, subject = subject)
+                } catch (e: MessagingException) {
+                    emptyList()
                 }
-                logger.info("Email for $to is found, subject is ${messages[0].subject}")
-                messages
-            } else {
-                if (numRetries <= 1) {
-                    null
-                } else {
-                    Time.sleep(RETRY_TIMEOUT)
-                    getEmails(
-                        to = to,
-                        numRetries = numRetries - 1
-                    )
-                }
+
+            if (messages.isNotEmpty()) {
+                return messages
             }
-        } catch (e: MessagingException) {
-            return getEmails(
-                to = to,
-                numRetries = numRetries - 1
-            )
         }
+
+        return emptyList()
+    }
+
+    @Synchronized()
+    private fun getEmails(
+        to: String,
+        subject: String? = null
+    ): List<MimeMessage> {
+        val email = extractMainEmail(to)
+        val imapMailReceiver = imapMailReceiver(email)
+        val messages = imapMailReceiver.receive().filter { message ->
+            message is MimeMessage && message.allRecipients.toList().map { it.toString() }.contains(to)
+                    && if (subject != null) message.subject.toString().contains(subject) else true
+        }.map {
+            it as MimeMessage
+        }
+
+        if (messages.size > 1) {
+            logger.warn("Found more than one email for $email, number of emails - ${messages.size}")
+        }
+        logger.info("Email for $email is found, subject is ${messages[0].subject}")
+
+        return messages
     }
 
     private fun extractMainEmail(to: String): String {

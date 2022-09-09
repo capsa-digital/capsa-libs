@@ -10,7 +10,7 @@ object CoreVersion {
     const val JMETER = "5.5"
     const val JMETER_JPGC_CASUTG = "2.10"
     const val OPENAPI = "1.6.9"
-    const val REACTOR_BOM = "Californium-RELEASE"
+    const val REACTOR_BOM = "2020.0.22"
     const val SPRING_CLOUD_FW = "3.2.6"
     const val SPRING_MAIL = "5.5.13"
     const val WIREMOCK_JRE8 = "2.33.2"
